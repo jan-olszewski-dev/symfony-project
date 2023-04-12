@@ -1,0 +1,55 @@
+name: "project-check"
+on: ["push"]
+run-name: "Changes provided into master by @${{ github.actor }}"
+defaults:
+  run:
+    working-directory: app
+env:
+  APP_ENV: test
+jobs:
+  project-check:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP, extensions and composer with shivammathur/setup-php
+        uses: shivammathur/setup-php@verbose
+        with:
+          php-version: 8.1
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Create .env
+        run: echo "APP_ENV=test" > .env
+
+      - name: Override phpstan config
+        run: mv phpstan.test.neon phpstan.neon
+
+      - name: Install Composer dependencies
+        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
+      - name: Security check installed dependencies
+        uses: symfonycorp/security-checker-action@v4
+        with:
+          lock: app/composer.lock
+
+      - name: Analyses PHP Code (PHP Mess Detector)
+        run: vendor/bin/phpmd src,tests text phpmd.xml
+
+      - name: Analyse PHP Code (PHPStan)
+        run: vendor/bin/phpstan analyse src
+
+      - name: Run unit and functional tests
+        run: php bin/phpunit --stop-on-failure
