@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  web:
+    image: nginx
+    ports:
+      - "${NGINX_EXTERNAL_PORT}:80"
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./app:/var/www/html
+    depends_on:
+      - php
+      - mysql
+  php:
+    build:
+      context: ./docker/php
+      args:
+        USER_UUID: "${USER_UUID}"
+        GROUP_UUID: "${GROUP_UUID}"
+    volumes:
+      - ./app:/var/www/html
+    expose:
+      - 9000
+    depends_on:
+      mysql:
+        condition: service_healthy
+  mysql:
+    image: mysql:8.0.30
+    environment:
+      MYSQL_DATABASE: "${DATABASE_NAME}"
+      MYSQL_ROOT_PASSWORD: "${DATABASE_ROOT_PASSWORD}"
+    ports:
+      - "${MYSQL_EXTERNAL_PORT}:3306"
+    command: mysqld --sql_mode=""
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=${DATABASE_ROOT_PASSWORD} --execute \"SHOW DATABASES;\""
+      interval: 2s
+      timeout: 20s
+      retries: 10
