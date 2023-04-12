@@ -1,0 +1,11 @@
+parameters:
+    symfony:
+        container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml
+    doctrine:
+        objectManagerLoader: tests/object-manager.php
+    checkGenericClassInNonGenericObjectType: false
+    checkMissingIterableValueType: false
+    level: 8
+    paths:
+        - src
+        - tests
