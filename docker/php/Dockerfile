@@ -18,4 +18,7 @@ RUN echo "xdebug.discover_client_host=1" >> /usr/local/etc/php/conf.d/docker-php
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+RUN bin/console doctrine:database:create --if-not-exists --no-interaction
+RUN bin/console doctrine:migrations:migrate --no-interaction
+
 CMD ["php-fpm"]
