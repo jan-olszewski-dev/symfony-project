@@ -1,18 +1,40 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Project{% endblock %}</title>
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li>
+                <a href="{{ path('app_home_page') }}">Home page</a>
+            </li>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li>
+                    <a href="{{ path('app_logout') }}">Logout</a>
+                </li>
+            {% else %}
+                <li>
+                    <a href="{{ path('app_login') }}">Login</a>
+                </li>
+                <li>
+                    <a href="{{ path('app_register_user') }}">Register</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
+{% block body %}{% endblock %}
+</body>
 </html>

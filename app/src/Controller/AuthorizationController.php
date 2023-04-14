@@ -14,7 +14,7 @@ class AuthorizationController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute('app_hello_world');
+            return $this->redirectToRoute('app_home_page');
         }
 
         return $this->render('security/login.html.twig', [
