@@ -5,6 +5,7 @@ ARG GROUP_ID=1000
 
 RUN usermod --uid ${USER_ID} --shell /bin/bash www-data
 RUN groupmod --gid ${GROUP_ID} www-data
+RUN chmod 777 /tmp
 
 RUN apt-get update
 RUN apt-get install -y libicu-dev g++ libzip-dev zip git
@@ -17,8 +18,5 @@ RUN echo "xdebug.mode=debug,coverage" >> /usr/local/etc/php/conf.d/docker-php-ex
 RUN echo "xdebug.discover_client_host=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-RUN bin/console doctrine:database:create --if-not-exists --no-interaction
-RUN bin/console doctrine:migrations:migrate --no-interaction
 
 CMD ["php-fpm"]
