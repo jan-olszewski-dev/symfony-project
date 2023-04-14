@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use SensitiveParameter;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -18,10 +19,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private string $email;
 
-    /**
-     * Hashed password
-     * @var string
-     */
     #[ORM\Column]
     private string $password;
 
@@ -30,6 +27,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 70)]
     private string $lastName;
+
+    private ?string $plainPassword = null;
 
     public function getId(): int
     {
@@ -65,11 +64,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /** @phpstan-ignore-next-line */
-    public function eraseCredentials()
-    {
-    }
-
     public function getFirstName(): string
     {
         return $this->firstName;
@@ -94,8 +88,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(#[SensitiveParameter] ?string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
     public function getRoles(): array
     {
         return [];
+    }
+
+    public function eraseCredentials(): void
+    {
+        $this->plainPassword = null;
     }
 }
