@@ -2,8 +2,11 @@ FROM node
 
 ARG WORK_DIR=/var/www/html
 
-WORKDIR ${WORK_DIR}
+RUN mkdir -p ${WORK_DIR}/../cache
+WORKDIR ${WORK_DIR}/../cache
 
 COPY app/package*.json .
 RUN npm install --quiet
-COPY app/. .
+
+RUN mkdir -p ${WORK_DIR}
+WORKDIR ${WORK_DIR}

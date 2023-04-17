@@ -55,12 +55,14 @@ services:
       dockerfile: ./docker/node/Dockerfile
       args:
         WORK_DIR: "${WORK_DIR}"
-    command: npm run build
+    command: ${WORK_DIR}/../cache/entrypoint.sh ${WORK_DIR}
     volumes:
       - "./app:${WORK_DIR}"
-      - "${WORK_DIR}/node_modules"
+      - "./docker/node/entrypoint.sh:${WORK_DIR}/../cache/entrypoint.sh"
     ports:
       - "${NODE_EXTERNAL_PORT}:3000"
+    environment:
+      NODE_ENV: development
     deploy:
       resources:
         limits:
