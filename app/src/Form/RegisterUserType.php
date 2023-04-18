@@ -18,12 +18,7 @@ class RegisterUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class, [
-                'constraints' => [
-                    new Assert\Email(),
-                    new Assert\NotBlank(),
-                ]
-            ])
+            ->add('email', EmailType::class)
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',
@@ -38,18 +33,8 @@ class RegisterUserType extends AbstractType
                     )
                 ]
             ])
-            ->add('firstName', TextType::class, [
-                'constraints' => [
-                    new Assert\Length(min: 2, max: 50),
-                    new Assert\NotBlank(),
-                ]
-            ])
-            ->add('lastName', TextType::class, [
-                'constraints' => [
-                    new Assert\Length(min: 3, max: 70),
-                    new Assert\NotBlank(),
-                ]
-            ]);
+            ->add('firstName', TextType::class)
+            ->add('lastName', TextType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
