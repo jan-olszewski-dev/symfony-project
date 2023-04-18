@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Event\RegisterUser\RegisterGoogleUserEvent;
+use App\Event\RegisterUser\RegisterLinkedInUserEvent;
 use App\Event\RegisterUser\RegisterSocialUserEvent;
 use App\Event\RegisterUser\RegisterUserEvent;
 use App\Form\RegisterUserType;
 use App\Repository\UserRepository;
 use KnpU\OAuth2ClientBundle\Client\Provider\GoogleClient;
+use KnpU\OAuth2ClientBundle\Client\Provider\LinkedInClient;
 use League\OAuth2\Client\Provider\GoogleUser;
+use League\OAuth2\Client\Provider\LinkedInResourceOwner;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -53,6 +56,22 @@ class RegisterUserController extends AbstractController
         $googleUser = $client->fetchUser();
         $this->dispatcher->dispatch(new RegisterGoogleUserEvent($googleUser), RegisterSocialUserEvent::NAME);
         $user = $this->repository->findOneBy(['googleSubId' => $googleUser->getId()]);
+
+        if (!$user) {
+            throw $this->createNotFoundException('Unable to find user to sign in');
+        }
+
+        $security->login($user);
+        return $this->redirectToRoute('app_home_page');
+    }
+
+    #[Route('/linkedin', name: 'app_linkedin_check', methods: ['GET'])]
+    public function linkedInCheck(LinkedInClient $client, Security $security): Response
+    {
+        /** @var LinkedInResourceOwner $linkedInUser */
+        $linkedInUser = $client->fetchUser();
+        $this->dispatcher->dispatch(new RegisterLinkedInUserEvent($linkedInUser), RegisterSocialUserEvent::NAME);
+        $user = $this->repository->findOneBy(['linkedInSubId' => $linkedInUser->getId()]);
 
         if (!$user) {
             throw $this->createNotFoundException('Unable to find user to sign in');

@@ -7,3 +7,9 @@ knpu_oauth2_client:
       client_secret: '%env(OAUTH_GOOGLE_CLIENT_SECRET)%'
       redirect_route: app_google_check
       redirect_params: { }
+    linkedin:
+      type: linkedin
+      client_id: '%env(OAUTH_LINKEDIN_CLIENT_ID)%'
+      client_secret: '%env(OAUTH_LINKEDIN_CLIENT_SECRET)%'
+      redirect_route: app_linkedin_check
+      redirect_params: { }

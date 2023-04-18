@@ -2,5 +2,6 @@
 
 {% block body %}
     {{ form(form) }}
-    <a href="{{ path('app_google_login') }}">Sign in by Google</a>
+    <a href="{{ path('app_social_login', {'client': 'google'}) }}">Sign in by Google</a>
+    <a href="{{ path('app_social_login', {'client': 'linkedin'}) }}">Sign in by LinkedIn</a>
 {% endblock %}

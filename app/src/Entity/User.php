@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use League\OAuth2\Client\Provider\GoogleUser;
+use League\OAuth2\Client\Provider\LinkedInResourceOwner;
 use Symfony\Component\Validator\Constraints as Assert;
 use SensitiveParameter;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -38,6 +39,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $googleSubId = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $linkedInSubId = null;
 
     private ?string $plainPassword = null;
 
@@ -111,6 +115,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getLinkedInSubId(): ?string
+    {
+        return $this->linkedInSubId;
+    }
+
+    public function setLinkedInSubId(?string $linkedInSubId): self
+    {
+        $this->linkedInSubId = $linkedInSubId;
+
+        return $this;
+    }
+
+
     public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
@@ -137,6 +154,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return (new self())
             ->setGoogleSubId($user->getId())
+            ->setEmail((string)$user->getEmail())
+            ->setFirstName((string)$user->getFirstName())
+            ->setLastName((string)$user->getLastName());
+    }
+
+    public static function creatLinkedInUser(LinkedInResourceOwner $user): self
+    {
+        return (new self())
+            ->setLinkedInSubId($user->getId())
             ->setEmail((string)$user->getEmail())
             ->setFirstName((string)$user->getFirstName())
             ->setLastName((string)$user->getLastName());

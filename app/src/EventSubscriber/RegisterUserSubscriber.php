@@ -4,10 +4,12 @@ namespace App\EventSubscriber;
 
 use App\Entity\User;
 use App\Event\RegisterUser\RegisterGoogleUserEvent;
+use App\Event\RegisterUser\RegisterLinkedInUserEvent;
 use App\Event\RegisterUser\RegisterSocialUserEvent;
 use App\Event\RegisterUser\RegisterUserEvent;
 use App\Repository\UserRepository;
 use League\OAuth2\Client\Provider\GoogleUser;
+use League\OAuth2\Client\Provider\LinkedInResourceOwner;
 use LogicException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -49,6 +51,7 @@ class RegisterUserSubscriber implements EventSubscriberInterface
         $socialUser = $event->getUser();
         $user = match ($event::class) {
             RegisterGoogleUserEvent::class => $this->repository->findOneBy(['googleSubId' => $socialUser->getId()]),
+            RegisterLinkedInUserEvent::class => $this->repository->findOneBy(['linkedInSubId' => $socialUser->getId()]),
             default => null,
         };
 
@@ -62,6 +65,7 @@ class RegisterUserSubscriber implements EventSubscriberInterface
         if (!$event->isPropagationStopped()) {
             $user = match ($event::class) {
                 RegisterGoogleUserEvent::class => $this->getGoogleUser($event->getUser()),
+                RegisterLinkedInUserEvent::class => $this->getLinkedInUser($event->getUser()),
                 default => throw new LogicException('Unsupported social account registration'),
             };
             $this->validator->validate($user);
@@ -92,5 +96,14 @@ class RegisterUserSubscriber implements EventSubscriberInterface
         return $user ?
             $user->setGoogleSubId($googleUser->getId()) :
             User::createGoogleUser($googleUser);
+    }
+
+    private function getLinkedInUser(LinkedInResourceOwner $linkedInUser): User
+    {
+        $user = $this->repository->findOneBy(['email' => $linkedInUser->getEmail()]);
+
+        return $user ?
+            $user->setLinkedInSubId($linkedInUser->getId()) :
+            User::creatLinkedInUser($linkedInUser);
     }
 }
