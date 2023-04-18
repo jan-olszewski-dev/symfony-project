@@ -3,11 +3,13 @@
 namespace App\EventSubscriber;
 
 use App\Entity\User;
+use App\Event\RegisterUser\RegisterFacebookUserEvent;
 use App\Event\RegisterUser\RegisterGoogleUserEvent;
 use App\Event\RegisterUser\RegisterLinkedInUserEvent;
 use App\Event\RegisterUser\RegisterSocialUserEvent;
 use App\Event\RegisterUser\RegisterUserEvent;
 use App\Repository\UserRepository;
+use League\OAuth2\Client\Provider\FacebookUser;
 use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Provider\LinkedInResourceOwner;
 use LogicException;
@@ -52,6 +54,7 @@ class RegisterUserSubscriber implements EventSubscriberInterface
         $user = match ($event::class) {
             RegisterGoogleUserEvent::class => $this->repository->findOneBy(['googleSubId' => $socialUser->getId()]),
             RegisterLinkedInUserEvent::class => $this->repository->findOneBy(['linkedInSubId' => $socialUser->getId()]),
+            RegisterFacebookUserEvent::class => $this->repository->findOneBy(['facebookSubId' => $socialUser->getId()]),
             default => null,
         };
 
@@ -66,6 +69,7 @@ class RegisterUserSubscriber implements EventSubscriberInterface
             $user = match ($event::class) {
                 RegisterGoogleUserEvent::class => $this->getGoogleUser($event->getUser()),
                 RegisterLinkedInUserEvent::class => $this->getLinkedInUser($event->getUser()),
+                RegisterFacebookUserEvent::class => $this->getFacebookUser($event->getUser()),
                 default => throw new LogicException('Unsupported social account registration'),
             };
             $this->validator->validate($user);
@@ -105,5 +109,14 @@ class RegisterUserSubscriber implements EventSubscriberInterface
         return $user ?
             $user->setLinkedInSubId($linkedInUser->getId()) :
             User::creatLinkedInUser($linkedInUser);
+    }
+
+    private function getFacebookUser(FacebookUser $facebookUser): User
+    {
+        $user = $this->repository->findOneBy(['email' => $facebookUser->getEmail()]);
+
+        return $user ?
+            $user->setLinkedInSubId($facebookUser->getId()) :
+            User::creatFacebookUser($facebookUser);
     }
 }

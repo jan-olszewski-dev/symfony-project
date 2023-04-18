@@ -2,14 +2,17 @@
 
 namespace App\Controller;
 
+use App\Event\RegisterUser\RegisterFacebookUserEvent;
 use App\Event\RegisterUser\RegisterGoogleUserEvent;
 use App\Event\RegisterUser\RegisterLinkedInUserEvent;
 use App\Event\RegisterUser\RegisterSocialUserEvent;
 use App\Event\RegisterUser\RegisterUserEvent;
 use App\Form\RegisterUserType;
 use App\Repository\UserRepository;
+use KnpU\OAuth2ClientBundle\Client\Provider\FacebookClient;
 use KnpU\OAuth2ClientBundle\Client\Provider\GoogleClient;
 use KnpU\OAuth2ClientBundle\Client\Provider\LinkedInClient;
+use League\OAuth2\Client\Provider\FacebookUser;
 use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Provider\LinkedInResourceOwner;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -72,6 +75,22 @@ class RegisterUserController extends AbstractController
         $linkedInUser = $client->fetchUser();
         $this->dispatcher->dispatch(new RegisterLinkedInUserEvent($linkedInUser), RegisterSocialUserEvent::NAME);
         $user = $this->repository->findOneBy(['linkedInSubId' => $linkedInUser->getId()]);
+
+        if (!$user) {
+            throw $this->createNotFoundException('Unable to find user to sign in');
+        }
+
+        $security->login($user);
+        return $this->redirectToRoute('app_home_page');
+    }
+
+    #[Route('/facebook', name: 'app_facebook_check', methods: ['GET'])]
+    public function facebookCheck(FacebookClient $client, Security $security): Response
+    {
+        /** @var FacebookUser $facebookUser */
+        $facebookUser = $client->fetchUser();
+        $this->dispatcher->dispatch(new RegisterFacebookUserEvent($facebookUser), RegisterSocialUserEvent::NAME);
+        $user = $this->repository->findOneBy(['facebookSubId' => $facebookUser->getId()]);
 
         if (!$user) {
             throw $this->createNotFoundException('Unable to find user to sign in');

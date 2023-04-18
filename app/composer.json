@@ -11,6 +11,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.14",
         "knpuniversity/oauth2-client-bundle": "^2.14",
+        "league/oauth2-facebook": "*",
         "league/oauth2-google": "^4.0",
         "league/oauth2-linkedin": "*",
         "symfony/console": "6.2.*",

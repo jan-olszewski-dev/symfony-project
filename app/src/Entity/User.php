@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use League\OAuth2\Client\Provider\FacebookUser;
 use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Provider\LinkedInResourceOwner;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -42,6 +43,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $linkedInSubId = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $facebookSubId = null;
 
     private ?string $plainPassword = null;
 
@@ -127,6 +131,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getFacebookSubId(): ?string
+    {
+        return $this->facebookSubId;
+    }
+
+    public function setFacebookSubId(?string $facebookSubId): self
+    {
+        $this->facebookSubId = $facebookSubId;
+
+        return $this;
+    }
 
     public function getPlainPassword(): ?string
     {
@@ -163,6 +178,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return (new self())
             ->setLinkedInSubId($user->getId())
+            ->setEmail((string)$user->getEmail())
+            ->setFirstName((string)$user->getFirstName())
+            ->setLastName((string)$user->getLastName());
+    }
+
+    public static function creatFacebookUser(FacebookUser $user): self
+    {
+        return (new self())
+            ->setFacebookSubId($user->getId())
             ->setEmail((string)$user->getEmail())
             ->setFirstName((string)$user->getFirstName())
             ->setLastName((string)$user->getLastName());

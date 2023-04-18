@@ -2,7 +2,6 @@
 
 namespace App\Event\RegisterUser;
 
-use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Provider\LinkedInResourceOwner;
 use Symfony\Contracts\EventDispatcher\Event;
 
