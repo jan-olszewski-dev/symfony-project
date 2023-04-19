@@ -28,6 +28,8 @@ open: ## Open container
 db-migrate: ## Run doctrine migrations
 	docker-compose exec -u 1000 php bin/console doctrine:database:create --no-interaction --if-not-exists
 	docker-compose exec -u 1000 php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+	docker-compose exec -u 1000 php bin/console doctrine:database:create --env test --no-interaction --if-not-exists
+	docker-compose exec -u 1000 php bin/console doctrine:migrations:migrate --env test --no-interaction --allow-no-migration
 
 test: ## Run test
 	docker-compose exec -u 1000 php bin/phpunit --filter "$(filter-out $@,$(MAKECMDGOALS))"
