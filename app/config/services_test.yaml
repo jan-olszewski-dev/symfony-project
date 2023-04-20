@@ -1,0 +1,10 @@
+services:
+  KnpU\OAuth2ClientBundle\Client\Provider\GoogleClient:
+    class: KnpU\OAuth2ClientBundle\Client\Provider\GoogleClient
+    public: true
+  KnpU\OAuth2ClientBundle\Client\Provider\LinkedInClient:
+    class: KnpU\OAuth2ClientBundle\Client\Provider\LinkedInClient
+    public: true
+  KnpU\OAuth2ClientBundle\Client\Provider\FacebookClient:
+    class: KnpU\OAuth2ClientBundle\Client\Provider\FacebookClient
+    public: true
