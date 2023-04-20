@@ -21,13 +21,13 @@ class UserTest extends KernelTestCase
 
         /** @var UserPasswordHasherInterface $hasher */
         $hasher = static::getContainer()->get(UserPasswordHasherInterface::class);
-        $password = $hasher->hashPassword($user, $user->getPlainPassword());
+        $password = $hasher->hashPassword($user, 'zaq1@WSX');
         $user->setPassword($password);
 
         return $user;
     }
 
-    public function testValidUserEntity()
+    public function testValidUserEntity(): void
     {
         $email = uniqid('email_') . '@test.com';
         $firstName = uniqid('firstName');
@@ -47,7 +47,7 @@ class UserTest extends KernelTestCase
 
         /** @var UserPasswordHasherInterface $hasher */
         $hasher = static::getContainer()->get(UserPasswordHasherInterface::class);
-        $password = $hasher->hashPassword($user, $user->getPlainPassword());
+        $password = $hasher->hashPassword($user, $plainPassword);
         $user->setPassword($password);
 
         $this->assertSame($email, $user->getEmail());

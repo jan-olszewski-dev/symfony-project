@@ -174,7 +174,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             ->setLastName((string)$user->getLastName());
     }
 
-    public static function creatLinkedInUser(LinkedInResourceOwner $user): self
+    public static function createLinkedInUser(LinkedInResourceOwner $user): self
     {
         return (new self())
             ->setLinkedInSubId($user->getId())
@@ -183,7 +183,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             ->setLastName((string)$user->getLastName());
     }
 
-    public static function creatFacebookUser(FacebookUser $user): self
+    public static function createFacebookUser(FacebookUser $user): self
     {
         return (new self())
             ->setFacebookSubId($user->getId())

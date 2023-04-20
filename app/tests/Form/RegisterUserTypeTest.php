@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Validation;
 
 class RegisterUserTypeTest extends TypeTestCase
 {
-    protected function getExtensions()
+    protected function getExtensions(): array
     {
         $validator = Validation::createValidatorBuilder()
             ->enableAnnotationMapping()
@@ -24,44 +24,56 @@ class RegisterUserTypeTest extends TypeTestCase
     }
 
     /** @dataProvider validDataProvider */
-    public function testSubmitValidData(RegisterUserDTO $registerUserDTO)
+    public function testSubmitValidData(
+        string $email,
+        string $plainPasswordFirst,
+        string $plainPasswordSecond,
+        string $firstName,
+        string $lastName
+    ): void
     {
         $user = new User();
         $form = $this->factory->create(RegisterUserType::class, $user);
 
         $form->submit([
-            'email' => $registerUserDTO->getEmail(),
+            'email' => $email,
             'plainPassword' => [
-                'first' => $registerUserDTO->getPlainPasswordFirst(),
-                'second' => $registerUserDTO->getPlainPasswordSecond()
+                'first' => $plainPasswordFirst,
+                'second' => $plainPasswordSecond
             ],
-            'firstName' => $registerUserDTO->getFirstName(),
-            'lastName' => $registerUserDTO->getLastName(),
+            'firstName' => $firstName,
+            'lastName' => $lastName,
         ]);
 
         $expectedUser = (new User())
-            ->setEmail($registerUserDTO->getEmail())
-            ->setPlainPassword($registerUserDTO->getPlainPasswordFirst())
-            ->setFirstName($registerUserDTO->getFirstName())
-            ->setLastName($registerUserDTO->getLastName());
+            ->setEmail($email)
+            ->setPlainPassword($plainPasswordFirst)
+            ->setFirstName($firstName)
+            ->setLastName($lastName);
 
         $this->assertTrue($form->isSynchronized());
         $this->assertEquals($expectedUser, $user);
     }
 
     /** @dataProvider invalidDataProvider */
-    public function testSubmitInvalidData(RegisterUserDTO $registerUserDTO)
+    public function testSubmitInvalidData(
+        ?string $email,
+        ?string $plainPasswordFirst,
+        ?string $plainPasswordSecond,
+        ?string $firstName,
+        ?string $lastName
+    ): void
     {
         $form = $this->factory->create(RegisterUserType::class);
 
         $form->submit([
-            'email' => $registerUserDTO->getEmail(),
+            'email' => $email,
             'plainPassword' => [
-                'first' => $registerUserDTO->getPlainPasswordFirst(),
-                'second' => $registerUserDTO->getPlainPasswordSecond()
+                'first' => $plainPasswordFirst,
+                'second' => $plainPasswordSecond
             ],
-            'firstName' => $registerUserDTO->getFirstName(),
-            'lastName' => $registerUserDTO->getLastName(),
+            'firstName' => $firstName,
+            'lastName' => $lastName,
         ]);
 
         $this->assertFalse($form->isValid());
@@ -71,13 +83,12 @@ class RegisterUserTypeTest extends TypeTestCase
     {
         return [
             [
-                new RegisterUserDTO(
-                    uniqid('email_') . '@test.com',
-                    'zaq1@WSX',
-                    'zaq1@WSX',
-                    uniqid('firstName'),
-                    uniqid('lastName')
-                )
+
+                uniqid('email_') . '@test.com',
+                'zaq1@WSX',
+                'zaq1@WSX',
+                uniqid('firstName'),
+                uniqid('lastName')
             ],
         ];
     }
@@ -86,178 +97,125 @@ class RegisterUserTypeTest extends TypeTestCase
     {
         return [
             [
-                new RegisterUserDTO(
-                    null,
-                    'zaq1@WSX',
-                    'zaq1@WSX',
-                    uniqid('firstName'),
-                    uniqid('lastName')
-                )
+
+                null,
+                'zaq1@WSX',
+                'zaq1@WSX',
+                uniqid('firstName'),
+                uniqid('lastName')
             ],
             [
-                new RegisterUserDTO(
-                    '',
-                    'zaq1@WSX',
-                    'zaq1@WSX',
-                    uniqid('firstName'),
-                    uniqid('lastName')
-                )
+
+                '',
+                'zaq1@WSX',
+                'zaq1@WSX',
+                uniqid('firstName'),
+                uniqid('lastName')
             ],
             [
-                new RegisterUserDTO(
-                    uniqid('email_') . '@test.com',
-                    uniqid('first'),
-                    uniqid('second'),
-                    uniqid('firstName'),
-                    uniqid('lastName')
-                )
+
+                uniqid('email_') . '@test.com',
+                uniqid('first'),
+                uniqid('second'),
+                uniqid('firstName'),
+                uniqid('lastName')
             ],
             [
-                new RegisterUserDTO(
-                    uniqid('email_') . '@test.com',
-                    null,
-                    'zaq1@WSX',
-                    uniqid('firstName'),
-                    uniqid('lastName')
-                )
+
+                uniqid('email_') . '@test.com',
+                null,
+                'zaq1@WSX',
+                uniqid('firstName'),
+                uniqid('lastName')
             ],
             [
-                new RegisterUserDTO(
-                    uniqid('email_') . '@test.com',
-                    'zaq1@WSX',
-                    null,
-                    uniqid('firstName'),
-                    uniqid('lastName')
-                )
+
+                uniqid('email_') . '@test.com',
+                'zaq1@WSX',
+                null,
+                uniqid('firstName'),
+                uniqid('lastName')
             ],
             [
-                new RegisterUserDTO(
-                    uniqid('email_') . '@test.com',
-                    '1234567',
-                    '1234567',
-                    uniqid('firstName'),
-                    uniqid('lastName')
-                )
+
+                uniqid('email_') . '@test.com',
+                '1234567',
+                '1234567',
+                uniqid('firstName'),
+                uniqid('lastName')
             ],
             [
-                new RegisterUserDTO(
-                    uniqid('email_') . '@test.com',
-                    'zaq12WSX',
-                    'zaq12WSX',
-                    uniqid('firstName'),
-                    uniqid('lastName')
-                )
+
+                uniqid('email_') . '@test.com',
+                'zaq12WSX',
+                'zaq12WSX',
+                uniqid('firstName'),
+                uniqid('lastName')
             ],
             [
-                new RegisterUserDTO(
-                    uniqid('email_') . '@test.com',
-                    'zaq1@WSX',
-                    'zaq1@WSX',
-                    null,
-                    uniqid('lastName')
-                )
+
+                uniqid('email_') . '@test.com',
+                'zaq1@WSX',
+                'zaq1@WSX',
+                null,
+                uniqid('lastName')
             ],
             [
-                new RegisterUserDTO(
-                    uniqid('email_') . '@test.com',
-                    'zaq1@WSX',
-                    'zaq1@WSX',
-                    '',
-                    uniqid('lastName')
-                )
+
+                uniqid('email_') . '@test.com',
+                'zaq1@WSX',
+                'zaq1@WSX',
+                '',
+                uniqid('lastName')
             ],
             [
-                new RegisterUserDTO(
-                    uniqid('email_') . '@test.com',
-                    'zaq1@WSX',
-                    'zaq1@WSX',
-                    'a',
-                    uniqid('lastName')
-                )
+
+                uniqid('email_') . '@test.com',
+                'zaq1@WSX',
+                'zaq1@WSX',
+                'a',
+                uniqid('lastName')
             ],
             [
-                new RegisterUserDTO(
-                    uniqid('email_') . '@test.com',
-                    'zaq1@WSX',
-                    'zaq1@WSX',
-                    substr(str_repeat(uniqid('firstName'), 50), 0, 51),
-                    uniqid('lastName')
-                )
+
+                uniqid('email_') . '@test.com',
+                'zaq1@WSX',
+                'zaq1@WSX',
+                substr(str_repeat(uniqid('firstName'), 50), 0, 51),
+                uniqid('lastName')
             ],
             [
-                new RegisterUserDTO(
-                    uniqid('email_') . '@test.com',
-                    'zaq1@WSX',
-                    'zaq1@WSX',
-                    uniqid('firstName'),
-                    null
-                )
+
+                uniqid('email_') . '@test.com',
+                'zaq1@WSX',
+                'zaq1@WSX',
+                uniqid('firstName'),
+                null
             ],
             [
-                new RegisterUserDTO(
-                    uniqid('email_') . '@test.com',
-                    'zaq1@WSX',
-                    'zaq1@WSX',
-                    uniqid('firstName'),
-                    ''
-                )
+
+                uniqid('email_') . '@test.com',
+                'zaq1@WSX',
+                'zaq1@WSX',
+                uniqid('firstName'),
+                ''
             ],
             [
-                new RegisterUserDTO(
-                    uniqid('email_') . '@test.com',
-                    'zaq1@WSX',
-                    'zaq1@WSX',
-                    uniqid('firstName'),
-                    'a'
-                )
+
+                uniqid('email_') . '@test.com',
+                'zaq1@WSX',
+                'zaq1@WSX',
+                uniqid('firstName'),
+                'a'
             ],
             [
-                new RegisterUserDTO(
-                    uniqid('email_') . '@test.com',
-                    'zaq1@WSX',
-                    'zaq1@WSX',
-                    uniqid('firstName'),
-                    substr(str_repeat(uniqid('lastName'), 70), 0, 71)
-                )
+
+                uniqid('email_') . '@test.com',
+                'zaq1@WSX',
+                'zaq1@WSX',
+                uniqid('firstName'),
+                substr(str_repeat(uniqid('lastName'), 70), 0, 71)
             ],
         ];
-    }
-}
-
-final class RegisterUserDTO
-{
-    public function __construct(
-        private ?string $email,
-        private ?string $plainPasswordFirst,
-        private ?string $plainPasswordSecond,
-        private ?string $firstName,
-        private ?string $lastName
-    )
-    {
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function getPlainPasswordFirst(): ?string
-    {
-        return $this->plainPasswordFirst;
-    }
-
-    public function getPlainPasswordSecond(): ?string
-    {
-        return $this->plainPasswordSecond;
-    }
-
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
     }
 }

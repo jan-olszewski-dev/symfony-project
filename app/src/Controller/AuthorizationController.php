@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Throwable;
 
 #[Route('/auth')]
 class AuthorizationController extends AbstractController
@@ -33,13 +32,14 @@ class AuthorizationController extends AbstractController
         return $this->redirectToRoute('app_login');
     }
 
-    #[Route('/social/{client}', name: 'app_social_login', methods: [Request::METHOD_GET])]
+    #[Route(
+        '/social/{client}',
+        name: 'app_social_login',
+        requirements: ['social' => 'google|linkedin|facebook'],
+        methods: [Request::METHOD_GET]
+    )]
     public function socialLoginRedirect(string $client, ClientRegistry $registry): Response
     {
-        try {
-            return $registry->getClient($client)->redirect([], []);
-        } catch (Throwable) {
-            throw $this->createNotFoundException('Unsupported social sign in type');
-        }
+        return $registry->getClient($client)->redirect([], []);
     }
 }

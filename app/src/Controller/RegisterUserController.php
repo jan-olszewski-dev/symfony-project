@@ -2,21 +2,9 @@
 
 namespace App\Controller;
 
-use App\Event\RegisterUser\RegisterFacebookUserEvent;
-use App\Event\RegisterUser\RegisterGoogleUserEvent;
-use App\Event\RegisterUser\RegisterLinkedInUserEvent;
-use App\Event\RegisterUser\RegisterSocialUserEvent;
-use App\Event\RegisterUser\RegisterUserEvent;
+use App\Event\RegisterUserEvent;
 use App\Form\RegisterUserType;
-use App\Repository\UserRepository;
-use KnpU\OAuth2ClientBundle\Client\Provider\FacebookClient;
-use KnpU\OAuth2ClientBundle\Client\Provider\GoogleClient;
-use KnpU\OAuth2ClientBundle\Client\Provider\LinkedInClient;
-use League\OAuth2\Client\Provider\FacebookUser;
-use League\OAuth2\Client\Provider\GoogleUser;
-use League\OAuth2\Client\Provider\LinkedInResourceOwner;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +15,6 @@ class RegisterUserController extends AbstractController
 {
     public function __construct(
         private EventDispatcherInterface $dispatcher,
-        private UserRepository           $repository
     )
     {
     }
@@ -52,51 +39,13 @@ class RegisterUserController extends AbstractController
         ]);
     }
 
-    #[Route('/google', name: 'app_google_check', methods: ['GET'])]
-    public function googleCheck(GoogleClient $client, Security $security): Response
+    #[Route(
+        '/{social}',
+        name: 'app_social_check',
+        requirements: ['social' => 'google|linkedin|facebook'],
+        methods: ['GET']
+    )]
+    public function socialCheck(): void
     {
-        /** @var GoogleUser $googleUser */
-        $googleUser = $client->fetchUser();
-        $this->dispatcher->dispatch(new RegisterGoogleUserEvent($googleUser), RegisterSocialUserEvent::NAME);
-        $user = $this->repository->findOneBy(['googleSubId' => $googleUser->getId()]);
-
-        if (!$user) {
-            throw $this->createNotFoundException('Unable to find user to sign in');
-        }
-
-        $security->login($user);
-        return $this->redirectToRoute('app_home_page');
-    }
-
-    #[Route('/linkedin', name: 'app_linkedin_check', methods: ['GET'])]
-    public function linkedInCheck(LinkedInClient $client, Security $security): Response
-    {
-        /** @var LinkedInResourceOwner $linkedInUser */
-        $linkedInUser = $client->fetchUser();
-        $this->dispatcher->dispatch(new RegisterLinkedInUserEvent($linkedInUser), RegisterSocialUserEvent::NAME);
-        $user = $this->repository->findOneBy(['linkedInSubId' => $linkedInUser->getId()]);
-
-        if (!$user) {
-            throw $this->createNotFoundException('Unable to find user to sign in');
-        }
-
-        $security->login($user);
-        return $this->redirectToRoute('app_home_page');
-    }
-
-    #[Route('/facebook', name: 'app_facebook_check', methods: ['GET'])]
-    public function facebookCheck(FacebookClient $client, Security $security): Response
-    {
-        /** @var FacebookUser $facebookUser */
-        $facebookUser = $client->fetchUser();
-        $this->dispatcher->dispatch(new RegisterFacebookUserEvent($facebookUser), RegisterSocialUserEvent::NAME);
-        $user = $this->repository->findOneBy(['facebookSubId' => $facebookUser->getId()]);
-
-        if (!$user) {
-            throw $this->createNotFoundException('Unable to find user to sign in');
-        }
-
-        $security->login($user);
-        return $this->redirectToRoute('app_home_page');
     }
 }

@@ -70,7 +70,8 @@
             "@auto-scripts"
         ],
         "phpmd": "phpmd src ansi phpmd.xml",
-        "phpstan": "phpstan analyse --memory-limit=-1"
+        "phpstan": "phpstan analyse --memory-limit=-1",
+        "phpcs": "php-cs-fixer"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -83,6 +84,7 @@
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^7.2",
+        "friendsofphp/php-cs-fixer": "*",
         "mockery/mockery": "*",
         "phpmd/phpmd": "2.13.0",
         "phpstan/extension-installer": "^1.2",
