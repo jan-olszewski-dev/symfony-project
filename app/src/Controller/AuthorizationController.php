@@ -3,10 +3,7 @@
 namespace App\Controller;
 
 use App\Form\LoginType;
-use InvalidArgumentException;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
-use KnpU\OAuth2ClientBundle\Client\Provider\GoogleClient;
-use KnpU\OAuth2ClientBundle\Client\Provider\LinkedInClient;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
