@@ -4,6 +4,7 @@ namespace App\Tests\Controller;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Tests\Entity\UserTest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -22,14 +23,11 @@ class RegisterUserControllerTest extends WebTestCase
 
     public function testRedirectLoggedUser()
     {
+        $user = UserTest::createValidUser();
         /** @var EntityManagerInterface $doctrine */
         $doctrine = static::getContainer()->get(EntityManagerInterface::class);
-        $userRepository = $doctrine->getRepository(User::class);
-        $user = $userRepository->findOneBy(['email' => 'test.test@test.com']);
-
-        if (!$user) {
-            $this->markTestSkipped('Run migration for test environment before running tests');
-        }
+        $doctrine->persist($user);
+        $doctrine->flush();
 
         $this->client->loginUser($user);
         $this->client->request(Request::METHOD_GET, '/register');
@@ -72,7 +70,5 @@ class RegisterUserControllerTest extends WebTestCase
         $this->assertTrue($passwordHasher->isPasswordValid($user, $plainPassword));
         $this->assertSame($firstName, $user->getFirstName());
         $this->assertSame($lastName, $user->getLastName());
-
-        $userRepository->remove($user)->flush();
     }
 }

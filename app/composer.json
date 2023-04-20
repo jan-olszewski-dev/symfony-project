@@ -82,6 +82,8 @@
         }
     },
     "require-dev": {
+        "dama/doctrine-test-bundle": "^7.2",
+        "mockery/mockery": "*",
         "phpmd/phpmd": "2.13.0",
         "phpstan/extension-installer": "^1.2",
         "phpstan/phpstan": "^1.10",
