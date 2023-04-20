@@ -7,10 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 use League\OAuth2\Client\Provider\FacebookUser;
 use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Provider\LinkedInResourceOwner;
-use Symfony\Component\Validator\Constraints as Assert;
-use SensitiveParameter;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -148,7 +147,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->plainPassword;
     }
 
-    public function setPlainPassword(#[SensitiveParameter] ?string $plainPassword): self
+    public function setPlainPassword(#[\SensitiveParameter] ?string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
 
@@ -169,26 +168,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return (new self())
             ->setGoogleSubId($user->getId())
-            ->setEmail((string)$user->getEmail())
-            ->setFirstName((string)$user->getFirstName())
-            ->setLastName((string)$user->getLastName());
+            ->setEmail((string) $user->getEmail())
+            ->setFirstName((string) $user->getFirstName())
+            ->setLastName((string) $user->getLastName());
     }
 
     public static function createLinkedInUser(LinkedInResourceOwner $user): self
     {
         return (new self())
             ->setLinkedInSubId($user->getId())
-            ->setEmail((string)$user->getEmail())
-            ->setFirstName((string)$user->getFirstName())
-            ->setLastName((string)$user->getLastName());
+            ->setEmail((string) $user->getEmail())
+            ->setFirstName((string) $user->getFirstName())
+            ->setLastName((string) $user->getLastName());
     }
 
     public static function createFacebookUser(FacebookUser $user): self
     {
         return (new self())
             ->setFacebookSubId($user->getId())
-            ->setEmail((string)$user->getEmail())
-            ->setFirstName((string)$user->getFirstName())
-            ->setLastName((string)$user->getLastName());
+            ->setEmail((string) $user->getEmail())
+            ->setFirstName((string) $user->getFirstName())
+            ->setLastName((string) $user->getLastName());
     }
 }

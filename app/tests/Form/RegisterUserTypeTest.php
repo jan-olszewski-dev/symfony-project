@@ -5,7 +5,6 @@ namespace App\Tests\Form;
 use App\Entity\User;
 use App\Form\RegisterUserType;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
-use Symfony\Component\Form\Test\Traits\ValidatorExtensionTrait;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\Validator\Validation;
 
@@ -30,8 +29,7 @@ class RegisterUserTypeTest extends TypeTestCase
         string $plainPasswordSecond,
         string $firstName,
         string $lastName
-    ): void
-    {
+    ): void {
         $user = new User();
         $form = $this->factory->create(RegisterUserType::class, $user);
 
@@ -39,7 +37,7 @@ class RegisterUserTypeTest extends TypeTestCase
             'email' => $email,
             'plainPassword' => [
                 'first' => $plainPasswordFirst,
-                'second' => $plainPasswordSecond
+                'second' => $plainPasswordSecond,
             ],
             'firstName' => $firstName,
             'lastName' => $lastName,
@@ -62,15 +60,14 @@ class RegisterUserTypeTest extends TypeTestCase
         ?string $plainPasswordSecond,
         ?string $firstName,
         ?string $lastName
-    ): void
-    {
+    ): void {
         $form = $this->factory->create(RegisterUserType::class);
 
         $form->submit([
             'email' => $email,
             'plainPassword' => [
                 'first' => $plainPasswordFirst,
-                'second' => $plainPasswordSecond
+                'second' => $plainPasswordSecond,
             ],
             'firstName' => $firstName,
             'lastName' => $lastName,
@@ -83,12 +80,11 @@ class RegisterUserTypeTest extends TypeTestCase
     {
         return [
             [
-
-                uniqid('email_') . '@test.com',
+                uniqid('email_').'@test.com',
                 'zaq1@WSX',
                 'zaq1@WSX',
                 uniqid('firstName'),
-                uniqid('lastName')
+                uniqid('lastName'),
             ],
         ];
     }
@@ -97,124 +93,109 @@ class RegisterUserTypeTest extends TypeTestCase
     {
         return [
             [
-
                 null,
                 'zaq1@WSX',
                 'zaq1@WSX',
                 uniqid('firstName'),
-                uniqid('lastName')
+                uniqid('lastName'),
             ],
             [
-
                 '',
                 'zaq1@WSX',
                 'zaq1@WSX',
                 uniqid('firstName'),
-                uniqid('lastName')
+                uniqid('lastName'),
             ],
             [
-
-                uniqid('email_') . '@test.com',
+                uniqid('email_').'@test.com',
                 uniqid('first'),
                 uniqid('second'),
                 uniqid('firstName'),
-                uniqid('lastName')
+                uniqid('lastName'),
             ],
             [
-
-                uniqid('email_') . '@test.com',
+                uniqid('email_').'@test.com',
                 null,
                 'zaq1@WSX',
                 uniqid('firstName'),
-                uniqid('lastName')
+                uniqid('lastName'),
             ],
             [
-
-                uniqid('email_') . '@test.com',
+                uniqid('email_').'@test.com',
                 'zaq1@WSX',
                 null,
                 uniqid('firstName'),
-                uniqid('lastName')
+                uniqid('lastName'),
             ],
             [
-
-                uniqid('email_') . '@test.com',
+                uniqid('email_').'@test.com',
                 '1234567',
                 '1234567',
                 uniqid('firstName'),
-                uniqid('lastName')
+                uniqid('lastName'),
             ],
             [
-
-                uniqid('email_') . '@test.com',
+                uniqid('email_').'@test.com',
                 'zaq12WSX',
                 'zaq12WSX',
                 uniqid('firstName'),
-                uniqid('lastName')
+                uniqid('lastName'),
             ],
             [
-
-                uniqid('email_') . '@test.com',
+                uniqid('email_').'@test.com',
                 'zaq1@WSX',
                 'zaq1@WSX',
                 null,
-                uniqid('lastName')
+                uniqid('lastName'),
             ],
             [
-
-                uniqid('email_') . '@test.com',
+                uniqid('email_').'@test.com',
                 'zaq1@WSX',
                 'zaq1@WSX',
                 '',
-                uniqid('lastName')
+                uniqid('lastName'),
             ],
             [
-
-                uniqid('email_') . '@test.com',
+                uniqid('email_').'@test.com',
                 'zaq1@WSX',
                 'zaq1@WSX',
                 'a',
-                uniqid('lastName')
+                uniqid('lastName'),
             ],
             [
-
-                uniqid('email_') . '@test.com',
+                uniqid('email_').'@test.com',
                 'zaq1@WSX',
                 'zaq1@WSX',
                 substr(str_repeat(uniqid('firstName'), 50), 0, 51),
-                uniqid('lastName')
+                uniqid('lastName'),
             ],
             [
-
-                uniqid('email_') . '@test.com',
+                uniqid('email_').'@test.com',
                 'zaq1@WSX',
                 'zaq1@WSX',
                 uniqid('firstName'),
-                null
+                null,
             ],
             [
-
-                uniqid('email_') . '@test.com',
+                uniqid('email_').'@test.com',
                 'zaq1@WSX',
                 'zaq1@WSX',
                 uniqid('firstName'),
-                ''
+                '',
             ],
             [
-
-                uniqid('email_') . '@test.com',
+                uniqid('email_').'@test.com',
                 'zaq1@WSX',
                 'zaq1@WSX',
                 uniqid('firstName'),
-                'a'
+                'a',
             ],
             [
-
-                uniqid('email_') . '@test.com',
+                uniqid('email_').'@test.com',
                 'zaq1@WSX',
                 'zaq1@WSX',
                 uniqid('firstName'),
-                substr(str_repeat(uniqid('lastName'), 70), 0, 71)
+                substr(str_repeat(uniqid('lastName'), 70), 0, 71),
             ],
         ];
     }

@@ -7,7 +7,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class RegisterUserEvent extends Event
 {
-    const NAME = 'register.user.event';
+    public const NAME = 'register.user.event';
 
     public function __construct(private User $user)
     {

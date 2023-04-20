@@ -30,8 +30,8 @@ class RegisterUserType extends AbstractType
                     new Assert\Regex(
                         '/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/',
                         message: 'Password is too weak. Must contain at least one lower and upper case letters, digit and special character'
-                    )
-                ]
+                    ),
+                ],
             ])
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class);

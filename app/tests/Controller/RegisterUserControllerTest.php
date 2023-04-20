@@ -8,7 +8,6 @@ use App\Tests\Entity\UserTest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -37,7 +36,7 @@ class RegisterUserControllerTest extends WebTestCase
 
     public function testRegisterForm(): void
     {
-        $email = uniqid('email_') . '@test.com';
+        $email = uniqid('email_').'@test.com';
         $plainPassword = 'zaq1@WSX';
         $firstName = uniqid('firstName');
         $lastName = uniqid('lastName');
@@ -47,11 +46,11 @@ class RegisterUserControllerTest extends WebTestCase
                 'email' => $email,
                 'plainPassword' => [
                     'first' => $plainPassword,
-                    'second' => $plainPassword
+                    'second' => $plainPassword,
                 ],
                 'firstName' => $firstName,
                 'lastName' => $lastName,
-            ]
+            ],
         ]);
 
         $this->client->submit($form);

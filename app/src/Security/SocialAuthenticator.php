@@ -23,29 +23,28 @@ use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface
 
 class SocialAuthenticator extends OAuth2Authenticator implements AuthenticationEntrypointInterface
 {
-    const GOOGLE = 'google';
-    const LINKED_IN = 'linkedin';
-    const FACEBOOK = 'facebook';
+    public const GOOGLE = 'google';
+    public const LINKED_IN = 'linkedin';
+    public const FACEBOOK = 'facebook';
 
-    const SUPPORTED_SOCIAL = [
+    public const SUPPORTED_SOCIAL = [
         self::GOOGLE,
         self::LINKED_IN,
         self::FACEBOOK,
     ];
 
     public function __construct(
-        private ClientRegistry         $clientRegistry,
+        private ClientRegistry $clientRegistry,
         private EntityManagerInterface $entityManager,
-        private RouterInterface        $router
-    )
-    {
+        private RouterInterface $router
+    ) {
     }
 
     public function supports(Request $request): ?bool
     {
         $routeInfo = $this->router->match($request->getPathInfo());
 
-        return $routeInfo['_route'] === 'app_social_check' &&
+        return 'app_social_check' === $routeInfo['_route'] &&
             in_array($routeInfo['social'] ?? null, self::SUPPORTED_SOCIAL);
     }
 
@@ -106,6 +105,7 @@ class SocialAuthenticator extends OAuth2Authenticator implements AuthenticationE
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         $message = strtr($exception->getMessageKey(), $exception->getMessageData());
+
         return new Response($message, Response::HTTP_FORBIDDEN);
     }
 

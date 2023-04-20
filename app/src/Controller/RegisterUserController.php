@@ -15,8 +15,7 @@ class RegisterUserController extends AbstractController
 {
     public function __construct(
         private EventDispatcherInterface $dispatcher,
-    )
-    {
+    ) {
     }
 
     #[Route('', name: 'app_register_user')]
@@ -31,6 +30,7 @@ class RegisterUserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->dispatcher->dispatch(new RegisterUserEvent($form->getData()), RegisterUserEvent::NAME);
+
             return $this->redirectToRoute('app_login');
         }
 

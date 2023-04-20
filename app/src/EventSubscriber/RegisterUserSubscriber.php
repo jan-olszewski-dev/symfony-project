@@ -4,23 +4,22 @@ namespace App\EventSubscriber;
 
 use App\Event\RegisterUserEvent;
 use App\Repository\UserRepository;
-use LogicException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+/** @SuppressWarnings(PHPMD.MissingImport) */
 class RegisterUserSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private UserRepository              $repository,
+        private UserRepository $repository,
         private UserPasswordHasherInterface $passwordHasher
-    )
-    {
+    ) {
     }
 
     public function onRegisterUserEventPre(RegisterUserEvent $event): void
     {
         $user = $event->getUser();
-        $password = $this->passwordHasher->hashPassword($user, (string)$user->getPlainPassword());
+        $password = $this->passwordHasher->hashPassword($user, (string) $user->getPlainPassword());
         $user->setPassword($password);
     }
 
@@ -28,8 +27,8 @@ class RegisterUserSubscriber implements EventSubscriberInterface
     {
         $user = $event->getUser();
 
-        if (!$this->passwordHasher->isPasswordValid($user, (string)$user->getPlainPassword())) {
-            throw new LogicException('Password don\'t match');
+        if (!$this->passwordHasher->isPasswordValid($user, (string) $user->getPlainPassword())) {
+            throw new \LogicException('Password don\'t match');
         }
 
         $user->eraseCredentials();

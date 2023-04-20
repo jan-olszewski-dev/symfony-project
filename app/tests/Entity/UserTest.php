@@ -11,7 +11,7 @@ class UserTest extends KernelTestCase
     public static function createValidUser(): EntityUser
     {
         $user = (new EntityUser())
-            ->setEmail(uniqid('email_') . '@test.com')
+            ->setEmail(uniqid('email_').'@test.com')
             ->setFirstName(uniqid('firstName'))
             ->setLastName(uniqid('lastName'))
             ->setPlainPassword('zaq1@WSX')
@@ -29,7 +29,7 @@ class UserTest extends KernelTestCase
 
     public function testValidUserEntity(): void
     {
-        $email = uniqid('email_') . '@test.com';
+        $email = uniqid('email_').'@test.com';
         $firstName = uniqid('firstName');
         $lastName = uniqid('lastName');
         $plainPassword = 'zaq1@WSX';

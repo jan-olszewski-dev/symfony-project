@@ -47,5 +47,8 @@ phpmd: ## PHP Mess Detector
 phpstan: ## PHP Static analyse
 	docker-compose exec php composer phpstan
 
+phpcs: ## PHP Code Sniffer fix
+	docker-compose exec php composer phpcs
+
 composer-install: ## Composer install
 	docker-compose exec -u 1000 php composer install
