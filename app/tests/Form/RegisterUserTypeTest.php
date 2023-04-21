@@ -89,6 +89,7 @@ class RegisterUserTypeTest extends TypeTestCase
         ];
     }
 
+    /** @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
     protected function invalidDataProvider(): array
     {
         return [
