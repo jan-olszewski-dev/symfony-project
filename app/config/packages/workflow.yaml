@@ -1,0 +1,41 @@
+framework:
+  workflows:
+    order_statuses:
+      type: 'state_machine'
+      marking_store:
+        type: method
+        property: state
+      supports:
+        - App\Entity\Order
+      initial_marking: !php/const App\Entity\Order::STATE_DRAFT
+      places:
+        - !php/const App\Entity\Order::STATE_DRAFT
+        - !php/const App\Entity\Order::STATE_PAY
+        - !php/const App\Entity\Order::STATE_PAID
+        - !php/const App\Entity\Order::STATE_PREPARE
+        - !php/const App\Entity\Order::STATE_PREPARED
+        - !php/const App\Entity\Order::STATE_DELIVER
+        - !php/const App\Entity\Order::STATE_DELIVERED
+        - !php/const App\Entity\Order::STATE_CANCELED
+      transitions:
+        pay:
+          from: !php/const App\Entity\Order::STATE_DRAFT
+          to: !php/const App\Entity\Order::STATE_PAY
+        paid:
+          from: !php/const App\Entity\Order::STATE_PAY
+          to: !php/const App\Entity\Order::STATE_PAID
+        prepare:
+          from: !php/const App\Entity\Order::STATE_PAID
+          to: !php/const App\Entity\Order::STATE_PREPARE
+        prepared:
+          from: !php/const App\Entity\Order::STATE_PREPARE
+          to: !php/const App\Entity\Order::STATE_PREPARED
+        deliver:
+          from: !php/const App\Entity\Order::STATE_PREPARED
+          to: !php/const App\Entity\Order::STATE_DELIVER
+        delivered:
+          from: !php/const App\Entity\Order::STATE_DELIVER
+          to: !php/const App\Entity\Order::STATE_DELIVERED
+        cancel:
+          from: [ !php/const App\Entity\Order::STATE_DRAFT, !php/const App\Entity\Order::STATE_PAY ]
+          to: !php/const App\Entity\Order::STATE_CANCELED
