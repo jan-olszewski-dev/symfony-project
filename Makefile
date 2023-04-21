@@ -22,6 +22,10 @@ reset: ## Reinitialize project
 	$(MAKE) delete
 	$(MAKE) init
 
+restart: ## Restart project
+	$(MAKE) stop
+	$(MAKE) start
+
 open: ## Open container
 	docker-compose exec -u 1000 $(filter-out $@,$(MAKECMDGOALS)) bash
 
