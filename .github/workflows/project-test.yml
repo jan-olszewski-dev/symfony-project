@@ -6,18 +6,20 @@ defaults:
     working-directory: app
 env:
   APP_ENV: test
+  NGINX_EXTERNAL_PORT:8080
+  MYSQL_EXTERNAL_PORT:3306
+  NODE_EXTERNAL_PORT:3000
+  WORK_DIR=/var/www/html
+  USER_UUID:1000
+  GROUP_UUID:1000
+  DATABASE_NAME="project_test"
+  DATABASE_ROOT_PASSWORD="root"
 jobs:
   project-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Set env
-        uses: cardinalby/export-env-action@v1
-        with:
-          envFile: '.env'
-          expand: 'true'
 
       - name: Build containers
         run: docker-compose build
