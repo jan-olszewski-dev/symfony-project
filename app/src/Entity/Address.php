@@ -11,30 +11,30 @@ class Address
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 80)]
-    private ?string $street = null;
+    private string $street;
 
     #[ORM\Column(length: 10)]
-    private ?string $streetNumber = null;
+    private string $streetNumber;
 
     #[ORM\Column(length: 10, nullable: true)]
     private ?string $flatNumber = null;
 
     #[ORM\Column(length: 5)]
-    private ?string $postalCode = null;
+    private string $postalCode;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?City $city = null;
+    private City $city;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getStreet(): ?string
+    public function getStreet(): string
     {
         return $this->street;
     }
@@ -46,7 +46,7 @@ class Address
         return $this;
     }
 
-    public function getStreetNumber(): ?string
+    public function getStreetNumber(): string
     {
         return $this->streetNumber;
     }
@@ -70,7 +70,7 @@ class Address
         return $this;
     }
 
-    public function getPostalCode(): ?string
+    public function getPostalCode(): string
     {
         return $this->postalCode;
     }
@@ -82,12 +82,12 @@ class Address
         return $this;
     }
 
-    public function getCity(): ?City
+    public function getCity(): City
     {
         return $this->city;
     }
 
-    public function setCity(?City $city): self
+    public function setCity(City $city): self
     {
         $this->city = $city;
 

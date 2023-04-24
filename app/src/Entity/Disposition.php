@@ -22,11 +22,12 @@ class Disposition
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 20)]
-    private ?string $status = self::STATE_DRAFT;
+    private string $status = self::STATE_DRAFT;
 
+    /** @var Collection<Dish> */
     #[ORM\ManyToMany(targetEntity: Dish::class)]
     private Collection $dishes;
 
@@ -35,12 +36,12 @@ class Disposition
         $this->dishes = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): string
     {
         return $this->status;
     }

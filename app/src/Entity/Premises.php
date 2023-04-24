@@ -26,12 +26,13 @@ class Premises
     #[ORM\JoinColumn(nullable: false)]
     private Restaurant $restaurant;
 
+    /** @var Collection<Dish>  */
     #[ORM\ManyToMany(targetEntity: Dish::class)]
-    private Collection $dish;
+    private Collection $dishes;
 
     public function __construct()
     {
-        $this->dish = new ArrayCollection();
+        $this->dishes = new ArrayCollection();
     }
 
     public function getId(): int
@@ -75,15 +76,15 @@ class Premises
         return $this;
     }
 
-    public function getDish(): Collection
+    public function getDishes(): Collection
     {
-        return $this->dish;
+        return $this->dishes;
     }
 
     public function addDish(Dish $dish): self
     {
-        if (!$this->dish->contains($dish)) {
-            $this->dish->add($dish);
+        if (!$this->dishes->contains($dish)) {
+            $this->dishes->add($dish);
         }
 
         return $this;
@@ -91,7 +92,7 @@ class Premises
 
     public function removeDish(Dish $dish): self
     {
-        $this->dish->removeElement($dish);
+        $this->dishes->removeElement($dish);
 
         return $this;
     }

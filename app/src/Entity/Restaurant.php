@@ -13,11 +13,12 @@ class Restaurant
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private string $name;
 
+    /** @var Collection<Premises> */
     #[ORM\OneToMany(mappedBy: 'restaurant', targetEntity: Premises::class, orphanRemoval: true)]
     private Collection $premises;
 
@@ -26,12 +27,12 @@ class Restaurant
         $this->premises = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -56,18 +57,6 @@ class Restaurant
         if (!$this->premises->contains($premise)) {
             $this->premises->add($premise);
             $premise->setRestaurant($this);
-        }
-
-        return $this;
-    }
-
-    public function removePremise(Premises $premise): self
-    {
-        if ($this->premises->removeElement($premise)) {
-            // set the owning side to null (unless already changed)
-            if ($premise->getRestaurant() === $this) {
-                $premise->setRestaurant(null);
-            }
         }
 
         return $this;

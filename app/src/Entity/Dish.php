@@ -12,27 +12,27 @@ class Dish
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private string $name;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $description = null;
+    private string $description;
 
     #[ORM\Column]
-    private ?int $price = null;
+    private int $price;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Restaurant $restaurant = null;
+    private Restaurant $restaurant;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -44,7 +44,7 @@ class Dish
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -56,7 +56,7 @@ class Dish
         return $this;
     }
 
-    public function getPrice(): ?int
+    public function getPrice(): int
     {
         return $this->price;
     }
@@ -68,12 +68,12 @@ class Dish
         return $this;
     }
 
-    public function getRestaurant(): ?Restaurant
+    public function getRestaurant(): Restaurant
     {
         return $this->restaurant;
     }
 
-    public function setRestaurant(?Restaurant $restaurant): self
+    public function setRestaurant(Restaurant $restaurant): self
     {
         $this->restaurant = $restaurant;
 
