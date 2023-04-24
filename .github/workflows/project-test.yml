@@ -27,6 +27,9 @@ jobs:
       - name: Run containers
         run: docker-compose up -d
 
+      - name: Create .env
+        run: docker-compose exec -T php echo "APP_ENV=test" > .env
+
       - name: Install composer dependencies
         run: docker-compose exec -T php composer install
 
