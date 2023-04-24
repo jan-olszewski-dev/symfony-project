@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div>
+        <h2>{{ restaurant.name }}</h2>
+        <div>
+            <h3>Locales</h3>
+            {% for premises in restaurant.premises %}
+                <div>
+                    <h5>{{ premises.name }}</h5>
+                    <p class="m-0 fw-bold">Address:</p>
+                    {% set address = premises.address %}
+                    <p class="m-0">{{ address.street }} {{ address.streetNumber }} {{ address.flatNumber }}</p>
+                    <p class="m-0">{{ address.postalCode }} {{ address.city.name }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

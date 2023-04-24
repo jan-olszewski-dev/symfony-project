@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_widget(form) }}
+{#    {% for premises in form.premises %}#}
+{#        { form_row(premises) }}#}
+{#    {% endfor %}#}
+{#    {{ form_widget(form.premises) }}#}
+    <input type="submit" value="create"/>
+    {{ form_end(form) }}
+{% endblock %}
