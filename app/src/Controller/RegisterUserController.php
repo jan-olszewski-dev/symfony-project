@@ -18,7 +18,7 @@ class RegisterUserController extends AbstractController
     ) {
     }
 
-    #[Route('', name: 'app_register_user')]
+    #[Route('', name: 'app_register_user', methods: [Request::METHOD_GET, Request::METHOD_POST])]
     public function index(Request $request): Response
     {
         if ($this->getUser()) {
@@ -43,7 +43,7 @@ class RegisterUserController extends AbstractController
         '/{social}',
         name: 'app_social_check',
         requirements: ['social' => 'google|linkedin|facebook'],
-        methods: ['GET']
+        methods: [Request::METHOD_GET]
     )]
     public function socialCheck(): void
     {

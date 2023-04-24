@@ -18,7 +18,7 @@ class RestaurantController extends AbstractController
     }
 
 
-    #[Route('', name: 'app_restaurant_list')]
+    #[Route('', name: 'app_restaurant_list', methods: [Request::METHOD_GET])]
     public function index(): Response
     {
         return $this->render('restaurant/index.html.twig', [
@@ -26,7 +26,7 @@ class RestaurantController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_restaurant_info', requirements: ['id' => '\d+'])]
+    #[Route('/{id}', name: 'app_restaurant_info', requirements: ['id' => '\d+'], methods: [Request::METHOD_GET])]
     public function info(?Restaurant $restaurant): Response
     {
         if (!$restaurant) {
@@ -38,7 +38,7 @@ class RestaurantController extends AbstractController
         ]);
     }
 
-    #[Route('/create', name: 'app_restaurant_create')]
+    #[Route('/create', name: 'app_restaurant_create', methods: [Request::METHOD_GET, Request::METHOD_POST])]
     public function create(Request $request): Response
     {
         $form = $this->createForm(CreateRestaurantType::class);
