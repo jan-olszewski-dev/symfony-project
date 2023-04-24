@@ -5,7 +5,7 @@ ARG WORK_DIR=/var/www/html
 RUN mkdir -p ${WORK_DIR}/../cache
 WORKDIR ${WORK_DIR}/../cache
 
-COPY app/package*.json .
+COPY app/package*.json ./
 RUN npm install --quiet
 
 RUN mkdir -p ${WORK_DIR}
