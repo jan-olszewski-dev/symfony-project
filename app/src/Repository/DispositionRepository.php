@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\Order;
+use App\Entity\Disposition;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Order>
+ * @extends ServiceEntityRepository<Disposition>
  *
- * @method Order|null find($id, $lockMode = null, $lockVersion = null)
- * @method Order|null findOneBy(array $criteria, array $orderBy = null)
- * @method Order[]    findAll()
- * @method Order[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Disposition|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Disposition|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Disposition[]    findAll()
+ * @method Disposition[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class OrderRepository extends ServiceEntityRepository
+class DispositionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Order::class);
+        parent::__construct($registry, Disposition::class);
     }
 
-    public function save(Order $entity, bool $flush = false): void
+    public function save(Disposition $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class OrderRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Order $entity, bool $flush = false): void
+    public function remove(Disposition $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 

@@ -6,36 +6,36 @@ framework:
         type: method
         property: state
       supports:
-        - App\Entity\Order
-      initial_marking: !php/const App\Entity\Order::STATE_DRAFT
+        - App\Entity\Disposition
+      initial_marking: !php/const App\Entity\Disposition::STATE_DRAFT
       places:
-        - !php/const App\Entity\Order::STATE_DRAFT
-        - !php/const App\Entity\Order::STATE_PAY
-        - !php/const App\Entity\Order::STATE_PAID
-        - !php/const App\Entity\Order::STATE_PREPARE
-        - !php/const App\Entity\Order::STATE_PREPARED
-        - !php/const App\Entity\Order::STATE_DELIVER
-        - !php/const App\Entity\Order::STATE_DELIVERED
-        - !php/const App\Entity\Order::STATE_CANCELED
+        - !php/const App\Entity\Disposition::STATE_DRAFT
+        - !php/const App\Entity\Disposition::STATE_PAY
+        - !php/const App\Entity\Disposition::STATE_PAID
+        - !php/const App\Entity\Disposition::STATE_PREPARE
+        - !php/const App\Entity\Disposition::STATE_PREPARED
+        - !php/const App\Entity\Disposition::STATE_DELIVER
+        - !php/const App\Entity\Disposition::STATE_DELIVERED
+        - !php/const App\Entity\Disposition::STATE_CANCELED
       transitions:
         pay:
-          from: !php/const App\Entity\Order::STATE_DRAFT
-          to: !php/const App\Entity\Order::STATE_PAY
+          from: !php/const App\Entity\Disposition::STATE_DRAFT
+          to: !php/const App\Entity\Disposition::STATE_PAY
         paid:
-          from: !php/const App\Entity\Order::STATE_PAY
-          to: !php/const App\Entity\Order::STATE_PAID
+          from: !php/const App\Entity\Disposition::STATE_PAY
+          to: !php/const App\Entity\Disposition::STATE_PAID
         prepare:
-          from: !php/const App\Entity\Order::STATE_PAID
-          to: !php/const App\Entity\Order::STATE_PREPARE
+          from: !php/const App\Entity\Disposition::STATE_PAID
+          to: !php/const App\Entity\Disposition::STATE_PREPARE
         prepared:
-          from: !php/const App\Entity\Order::STATE_PREPARE
-          to: !php/const App\Entity\Order::STATE_PREPARED
+          from: !php/const App\Entity\Disposition::STATE_PREPARE
+          to: !php/const App\Entity\Disposition::STATE_PREPARED
         deliver:
-          from: !php/const App\Entity\Order::STATE_PREPARED
-          to: !php/const App\Entity\Order::STATE_DELIVER
+          from: !php/const App\Entity\Disposition::STATE_PREPARED
+          to: !php/const App\Entity\Disposition::STATE_DELIVER
         delivered:
-          from: !php/const App\Entity\Order::STATE_DELIVER
-          to: !php/const App\Entity\Order::STATE_DELIVERED
+          from: !php/const App\Entity\Disposition::STATE_DELIVER
+          to: !php/const App\Entity\Disposition::STATE_DELIVERED
         cancel:
-          from: [ !php/const App\Entity\Order::STATE_DRAFT, !php/const App\Entity\Order::STATE_PAY ]
-          to: !php/const App\Entity\Order::STATE_CANCELED
+          from: [ !php/const App\Entity\Disposition::STATE_DRAFT, !php/const App\Entity\Disposition::STATE_PAY ]
+          to: !php/const App\Entity\Disposition::STATE_CANCELED
