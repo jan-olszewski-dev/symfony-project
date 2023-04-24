@@ -21,46 +21,22 @@ class PremisesRepository extends ServiceEntityRepository
         parent::__construct($registry, Premises::class);
     }
 
-    public function save(Premises $entity, bool $flush = false): void
+    public function save(Premises $entity): self
     {
         $this->getEntityManager()->persist($entity);
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        return $this;
     }
 
-    public function remove(Premises $entity, bool $flush = false): void
+    public function remove(Premises $entity): self
     {
         $this->getEntityManager()->remove($entity);
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        return $this;
     }
 
-//    /**
-//     * @return Premises[] Returns an array of Premises objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Premises
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function flush(): void
+    {
+        $this->getEntityManager()->flush();
+    }
 }
