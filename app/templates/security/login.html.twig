@@ -1,7 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ form(form) }}
+    {{ form_start(form) }}
+        {% if error %}
+            <div>{{ error.message }}</div>
+        {% endif %}
+        {{ form_widget(form) }}
+        <input type="submit" value="send">
+    {{ form_end(form) }}
     <a href="{{ path('app_social_login', {'client': 'google'}) }}">Sign in by Google</a>
     <a href="{{ path('app_social_login', {'client': 'linkedin'}) }}">Sign in by LinkedIn</a>
     <a href="{{ path('app_social_login', {'client': 'facebook'}) }}">Sign in by Facebook</a>
