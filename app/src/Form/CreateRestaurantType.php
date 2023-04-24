@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateRestaurantType extends AbstractType
 {
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
