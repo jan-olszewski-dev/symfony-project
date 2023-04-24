@@ -14,7 +14,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set env
-        run: cat ../.env >> $GITHUB_ENV
+        uses: cardinalby/export-env-action@v1
+        with:
+          envFile: '.env'
+          expand: 'true'
 
       - name: Build containers
         run: docker-compose build
