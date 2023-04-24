@@ -12,12 +12,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-#
-#      - name: Build containers
-#        run: docker-compose build --env-file .env
+
+      - name: Set env
+        run: cat .env >> $GITHUB_ENV
+
+      - name: Build containers
+        run: docker-compose build
 
       - name: Run containers
-        run: docker-compose up -d --build --env-file .env
+        run: docker-compose up -d
 
       - name: Install composer dependencies
         run: docker-compose exec -u 1000 php composer install
