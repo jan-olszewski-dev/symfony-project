@@ -11,7 +11,7 @@ final class Version20230424115135 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return "Create premises storing table";
+        return 'Create premises storing table';
     }
 
     public function up(Schema $schema): void

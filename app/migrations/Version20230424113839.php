@@ -11,7 +11,7 @@ final class Version20230424113839 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return "Create restaurant storing table";
+        return 'Create restaurant storing table';
     }
 
     public function up(Schema $schema): void

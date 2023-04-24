@@ -17,12 +17,11 @@ class RestaurantController extends AbstractController
     {
     }
 
-
     #[Route('', name: 'app_restaurant_list', methods: [Request::METHOD_GET])]
     public function index(): Response
     {
         return $this->render('restaurant/index.html.twig', [
-            'restaurants' => $this->entityManager->getRepository(Restaurant::class)->findAll()
+            'restaurants' => $this->entityManager->getRepository(Restaurant::class)->findAll(),
         ]);
     }
 
@@ -34,7 +33,7 @@ class RestaurantController extends AbstractController
         }
 
         return $this->render('restaurant/info.html.twig', [
-            'restaurant' => $restaurant
+            'restaurant' => $restaurant,
         ]);
     }
 
@@ -47,6 +46,7 @@ class RestaurantController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->persist($form->getData());
             $this->entityManager->flush();
+
             return $this->redirectToRoute('app_restaurant_list');
         }
 

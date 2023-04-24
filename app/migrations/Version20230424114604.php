@@ -11,7 +11,7 @@ final class Version20230424114604 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return "Create dish storing table";
+        return 'Create dish storing table';
     }
 
     public function up(Schema $schema): void

@@ -11,7 +11,7 @@ final class Version20230424124253 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return "Added relation between dish and premises";
+        return 'Added relation between dish and premises';
     }
 
     public function up(Schema $schema): void

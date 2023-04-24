@@ -11,7 +11,7 @@ final class Version20230424121220 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return "Create disposition and disposition_dish storing table";
+        return 'Create disposition and disposition_dish storing table';
     }
 
     public function up(Schema $schema): void
@@ -24,22 +24,25 @@ final class Version20230424121220 extends AbstractMigration
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         ');
         $this->addSql(
-        'CREATE TABLE disposition_dish (
+            'CREATE TABLE disposition_dish (
                 disposition_id INT NOT NULL,
                 dish_id INT NOT NULL,
                 INDEX IDX_2A18AA23287B65ED (disposition_id),
                 INDEX IDX_2A18AA23148EB0CB (dish_id),
                 PRIMARY KEY(disposition_id, dish_id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
-        ');
+        '
+        );
         $this->addSql(
-        'ALTER TABLE disposition_dish 
+            'ALTER TABLE disposition_dish 
                 ADD CONSTRAINT FK_2A18AA23287B65ED FOREIGN KEY (disposition_id) REFERENCES disposition (id) ON DELETE CASCADE
-        ');
+        '
+        );
         $this->addSql(
-        'ALTER TABLE disposition_dish 
+            'ALTER TABLE disposition_dish 
                 ADD CONSTRAINT FK_2A18AA23148EB0CB FOREIGN KEY (dish_id) REFERENCES dish (id) ON DELETE CASCADE
-        ');
+        '
+        );
     }
 
     public function down(Schema $schema): void

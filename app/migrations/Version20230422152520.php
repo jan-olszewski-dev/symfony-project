@@ -11,7 +11,7 @@ final class Version20230422152520 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return "Create city information table and populate it";
+        return 'Create city information table and populate it';
     }
 
     public function up(Schema $schema): void

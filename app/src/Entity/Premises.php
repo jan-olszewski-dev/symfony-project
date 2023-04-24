@@ -26,7 +26,7 @@ class Premises
     #[ORM\JoinColumn(nullable: false)]
     private Restaurant $restaurant;
 
-    /** @var Collection<Dish>  */
+    /** @var Collection<Dish> */
     #[ORM\ManyToMany(targetEntity: Dish::class)]
     private Collection $dishes;
 

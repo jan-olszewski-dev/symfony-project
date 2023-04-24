@@ -27,6 +27,7 @@ class RestaurantRepository extends ServiceEntityRepository
 
         return $this;
     }
+
     public function remove(Restaurant $entity): self
     {
         $this->getEntityManager()->remove($entity);
