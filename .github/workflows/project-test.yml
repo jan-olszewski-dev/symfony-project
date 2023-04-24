@@ -1,0 +1,32 @@
+name: "project-test"
+on: ["push"]
+run-name: "Changes provided into master by @${{ github.actor }}"
+defaults:
+  run:
+    working-directory: app
+env:
+  APP_ENV: test
+jobs:
+  project-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build containers
+        run: docker-compose build
+
+      - name: Run containers
+        run: docker-compose up -d
+
+      - name: Install composer dependencies
+        run: docker-compose exec -u 1000 php composer install
+
+      - name: Create test database
+        run: docker-compose exec -u 1000 php bin/console doctrine:database:create --env test --no-interaction --if-not-exists
+
+      - name: Run migrations for test
+        run: docker-compose exec -u 1000 php bin/console doctrine:migrations:migrate --env test --no-interaction --allow-no-migration
+
+      - name: Run tests
+        run: docker-compose exec -u 1000 php bin/phpunit
