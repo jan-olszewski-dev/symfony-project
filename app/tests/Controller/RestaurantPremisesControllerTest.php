@@ -7,6 +7,7 @@ use App\Entity\City;
 use App\Entity\Premises;
 use App\Entity\Restaurant;
 use App\Repository\RestaurantRepository;
+use App\Tests\Entity\PremisesTest;
 use App\Tests\Entity\RestaurantTest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -16,39 +17,30 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @property KernelBrowser $client
  */
-class RestaurantControllerTest extends WebTestCase
+class RestaurantPremisesControllerTest extends WebTestCase
 {
     protected function setUp(): void
     {
         $this->client = $this->createClient();
     }
 
-    public function testRestaurantListAndLink(): void
+    public function testRestaurantPremisesList(): void
     {
-        $restaurant = RestaurantTest::createValidRestaurant();
+        $premises = PremisesTest::createValidPremises();
         /** @var EntityManagerInterface $doctrine */
         $doctrine = static::getContainer()->get(EntityManagerInterface::class);
-        $doctrine->persist($restaurant);
+        $doctrine->persist($premises);
         $doctrine->flush();
 
-        $this->client->request(Request::METHOD_GET, '/restaurant');
+        $this->client->request(Request::METHOD_GET, "/premises/{$premises->getRestaurant()->getId()}");
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextSame('h2', $restaurant->getName());
-        $this->client->clickLink('more info');
-        $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextSame('h2', $restaurant->getName());
-        $this->assertSelectorTextSame('p', 'No premises assigned to restaurant');
+        $this->assertSelectorTextSame('h1', $premises->getRestaurant()->getName());
+        $this->assertSelectorTextSame('h2', $premises->getName());
     }
 
-    public function testNotFoundRestaurantRedirect(): void
+    public function testAddPremises(): void
     {
-        $this->client->request(Request::METHOD_GET, '/restaurant/1');
-        $this->assertResponseRedirects('/restaurant');
-    }
-
-    public function testCreateRestaurant(): void
-    {
-        $restaurantName = uniqid('name');
+        $restaurant = RestaurantTest::createValidRestaurant();
         $localName = uniqid('name');
         $street = uniqid('street');
         $streetNumber = (string) rand(0, 100);
@@ -58,13 +50,12 @@ class RestaurantControllerTest extends WebTestCase
         $doctrine = static::getContainer()->get(EntityManagerInterface::class);
         /** @var City $city */
         $city = $doctrine->getRepository(City::class)->find(1);
+        $doctrine->persist($restaurant);
+        $doctrine->flush();
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/restaurant/create');
+        $crawler = $this->client->request(Request::METHOD_GET, "/premises/{$restaurant->getId()}/add");
         $form = $crawler->selectButton('create')->form([
-            'create_restaurant' => [
-                'restaurant' => [
-                    'name' => $restaurantName,
-                ],
+            'premises' => [
                 'name' => $localName,
                 'address' => [
                     'street' => $street,
@@ -77,7 +68,7 @@ class RestaurantControllerTest extends WebTestCase
         ]);
 
         $this->client->submit($form);
-        $this->assertResponseRedirects('/restaurant');
+        $this->assertResponseRedirects("/premises/{$restaurant->getId()}");
 
         /** @var EntityManagerInterface $doctrine */
         $doctrine = static::getContainer()->get(EntityManagerInterface::class);
@@ -88,11 +79,8 @@ class RestaurantControllerTest extends WebTestCase
         $this->assertInstanceOf(Premises::class, $premises);
         $this->assertNotEmpty($premises->getId());
         $this->assertSame($localName, $premises->getName());
-
-        $restaurant = $premises->getRestaurant();
-        $this->assertInstanceOf(Restaurant::class, $restaurant);
-        $this->assertNotEmpty($restaurant->getId());
-        $this->assertSame($restaurantName, $restaurant->getName());
+        $this->assertInstanceOf(Restaurant::class, $premises->getRestaurant());
+        $this->assertSame($restaurant->getId(), $premises->getRestaurant()->getId());
 
         $address = $premises->getAddress();
         $this->assertInstanceOf(Address::class, $address);

@@ -13,6 +13,8 @@
                 <p class="m-0">{{ address.street }} {{ address.streetNumber }} {{ address.flatNumber }}</p>
                 <p class="m-0">{{ address.postalCode }} {{ address.city.name }}</p>
             </div>
+        {% else %}
+            <p>No premises assigned to restaurant</p>
         {% endfor %}
     </div>
 {% endblock %}
