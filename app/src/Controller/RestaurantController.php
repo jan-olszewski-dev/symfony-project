@@ -29,7 +29,7 @@ class RestaurantController extends AbstractController
     public function info(?Restaurant $restaurant): Response
     {
         if (!$restaurant) {
-            $this->redirectToRoute('app_restaurant_list');
+            return $this->redirectToRoute('app_restaurant_list');
         }
 
         return $this->render('restaurant/info.html.twig', [

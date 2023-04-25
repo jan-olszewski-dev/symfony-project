@@ -2,15 +2,15 @@
 
 namespace App\Tests\Entity;
 
-use App\Entity\User as EntityUser;
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserTest extends KernelTestCase
 {
-    public static function createValidUser(): EntityUser
+    public static function createValidUser(): User
     {
-        $user = (new EntityUser())
+        $user = (new User())
             ->setEmail(uniqid('email_').'@test.com')
             ->setFirstName(uniqid('firstName'))
             ->setLastName(uniqid('lastName'))
@@ -36,7 +36,7 @@ class UserTest extends KernelTestCase
         $googleSubId = uniqid('googleSubId_');
         $linkedInSubId = uniqid('linkedInSubId_');
         $facebookSubId = uniqid('facebookSubId_');
-        $user = (new EntityUser())
+        $user = (new User())
             ->setEmail($email)
             ->setFirstName($firstName)
             ->setLastName($lastName)
