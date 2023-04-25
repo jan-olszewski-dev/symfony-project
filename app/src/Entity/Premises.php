@@ -6,6 +6,7 @@ use App\Repository\PremisesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PremisesRepository::class)]
 class Premises
@@ -16,10 +17,13 @@ class Premises
     private int $id;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank()]
     private string $name;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid()]
     private Address $address;
 
     #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'premises')]
