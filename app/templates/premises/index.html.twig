@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PremisesController!{% endblock %}
+
+{% block body %}
+    <div>
+        <h1>{{ restaurant.name }}</h1>
+        {% for local in premises %}
+            <div>
+                <h2>{{ local.name }}</h2>
+                <p class="m-0 fw-bold">Address:</p>
+                {% set address = local.address %}
+                <p class="m-0">{{ address.street }} {{ address.streetNumber }} {{ address.flatNumber }}</p>
+                <p class="m-0">{{ address.postalCode }} {{ address.city.name }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
