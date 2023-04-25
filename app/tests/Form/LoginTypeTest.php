@@ -4,7 +4,6 @@ namespace App\Tests\Form;
 
 use App\Entity\User;
 use App\Form\LoginType;
-use App\Form\RegisterUserType;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\Validator\Validation;
@@ -27,8 +26,7 @@ class LoginTypeTest extends TypeTestCase
     public function testSubmitValidData(
         string $email,
         string $password,
-    ): void
-    {
+    ): void {
         $user = new User();
         $form = $this->factory->create(LoginType::class, $user);
 
@@ -49,8 +47,7 @@ class LoginTypeTest extends TypeTestCase
     public function testSubmitInvalidData(
         ?string $email,
         ?string $password,
-    ): void
-    {
+    ): void {
         $form = $this->factory->create(LoginType::class, new User());
 
         $form->submit([
@@ -65,7 +62,7 @@ class LoginTypeTest extends TypeTestCase
     {
         return [
             [
-                uniqid('email_') . '@test.com',
+                uniqid('email_').'@test.com',
                 'zaq1@WSX',
             ],
         ];
@@ -84,7 +81,7 @@ class LoginTypeTest extends TypeTestCase
                 'zaq1@WSX',
             ],
             [
-                uniqid('email_') . '@test.com',
+                uniqid('email_').'@test.com',
                 null,
             ],
         ];

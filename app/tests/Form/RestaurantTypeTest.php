@@ -3,8 +3,6 @@
 namespace App\Tests\Form;
 
 use App\Entity\Restaurant;
-use App\Entity\User;
-use App\Form\RegisterUserType;
 use App\Form\RestaurantType;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -27,8 +25,7 @@ class RestaurantTypeTest extends TypeTestCase
     /** @dataProvider validDataProvider */
     public function testSubmitValidData(
         string $name,
-    ): void
-    {
+    ): void {
         $restaurant = new Restaurant();
         $form = $this->factory->create(RestaurantType::class, $restaurant);
 
@@ -46,8 +43,7 @@ class RestaurantTypeTest extends TypeTestCase
     /** @dataProvider invalidDataProvider */
     public function testSubmitInvalidData(
         ?string $name,
-    ): void
-    {
+    ): void {
         $form = $this->factory->create(RestaurantType::class, new Restaurant());
 
         $form->submit([
