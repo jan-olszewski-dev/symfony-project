@@ -13,7 +13,7 @@ class RestaurantTest extends KernelTestCase
             ->setName(uniqid('name'));
     }
 
-    public function testValidRestaurantEntity()
+    public function testValidRestaurantEntity(): void
     {
         $name = uniqid('name');
         $restaurant = (new Restaurant())
