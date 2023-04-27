@@ -34,6 +34,7 @@ class RegisterUserSubscriber implements EventSubscriberInterface
             throw new \LogicException('Password don\'t match');
         }
 
+        /** @var UserRole $userRole */
         $userRole = $this->userRoleRepository->findOneBy(['role' => UserRole::USER]);
         $user
             ->addRole($userRole)

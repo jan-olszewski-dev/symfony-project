@@ -17,5 +17,17 @@
                 <p>No premises assigned to restaurant</p>
             {% endfor %}
         </div>
+        <div>
+            <h3>Employees</h3>
+            {% for employee in restaurant.employees %}
+                <p>{{ employee.employee.firstName }} {{ employee.employee.lastName }} ({{ employee.employee.email }})</p>
+                <p>roles</p>
+                <ul>
+                    {% for role in employee.roles %}
+                        <li>{{ role }}</li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

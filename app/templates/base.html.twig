@@ -20,6 +20,11 @@
             <li>
                 <a href="{{ path('app_home_page') }}">Home page</a>
             </li>
+            {% if is_granted('ROLE_USER') %}
+                <li>
+                    <a href="{{ path('app_restaurant_create') }}">Create restaurant</a>
+                </li>
+            {% endif %}
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <li>
                     <a href="{{ path('app_logout') }}">Logout</a>

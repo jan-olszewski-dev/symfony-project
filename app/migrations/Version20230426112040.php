@@ -20,6 +20,7 @@ final class Version20230426112040 extends AbstractMigration
             CREATE TABLE user_role (
                 id INT AUTO_INCREMENT NOT NULL,
                 role VARCHAR(30) NOT NULL,
+                UNIQUE INDEX UNIQ_2DE8C6A357698A6A (role),
                 PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         ');

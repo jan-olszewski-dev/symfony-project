@@ -21,13 +21,23 @@ class Restaurant
     #[Assert\NotBlank()]
     private string $name;
 
-    /** @var Collection<Premises> */
+    /** @var Collection<int, Premises> */
     #[ORM\OneToMany(mappedBy: 'restaurant', targetEntity: Premises::class, orphanRemoval: true)]
     private Collection $premises;
+
+    /** @var Collection<int, RestaurantEmployee> */
+    #[ORM\OneToMany(
+        mappedBy: 'restaurant',
+        targetEntity: RestaurantEmployee::class,
+        cascade: ['persist'],
+        orphanRemoval: true
+    )]
+    private Collection $employees;
 
     public function __construct()
     {
         $this->premises = new ArrayCollection();
+        $this->employees = new ArrayCollection();
     }
 
     public function getId(): int
@@ -61,6 +71,31 @@ class Restaurant
             $this->premises->add($premise);
             $premise->setRestaurant($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RestaurantEmployee>
+     */
+    public function getEmployees(): Collection
+    {
+        return $this->employees;
+    }
+
+    public function addEmployee(RestaurantEmployee $employee): self
+    {
+        if (!$this->employees->contains($employee)) {
+            $this->employees->add($employee);
+            $employee->setRestaurant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmployee(RestaurantEmployee $employee): self
+    {
+        $this->employees->removeElement($employee);
 
         return $this;
     }

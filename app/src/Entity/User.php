@@ -50,6 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     private ?string $plainPassword = null;
 
+    /** @var Collection<int, UserRole> */
     #[ORM\JoinTable(name: 'user_role_map')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'role_id', referencedColumnName: 'id')]
@@ -171,7 +172,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->roles
             ->map(function (UserRole $role) {
-                return (string)$role;
+                return (string) $role;
             })
             ->toArray();
     }

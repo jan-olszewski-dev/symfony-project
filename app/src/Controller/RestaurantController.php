@@ -2,19 +2,26 @@
 
 namespace App\Controller;
 
+use App\Entity\Premises;
 use App\Entity\Restaurant;
+use App\Entity\UserRole;
+use App\Event\CreateRestaurantEvent;
 use App\Form\CreateRestaurantType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/restaurant')]
 class RestaurantController extends AbstractController
 {
-    public function __construct(private EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private EventDispatcherInterface $dispatcher,
+    ) {
     }
 
     #[Route('', name: 'app_restaurant_list', methods: [Request::METHOD_GET])]
@@ -38,14 +45,15 @@ class RestaurantController extends AbstractController
     }
 
     #[Route('/create', name: 'app_restaurant_create', methods: [Request::METHOD_GET, Request::METHOD_POST])]
+    #[IsGranted(UserRole::USER)]
     public function create(Request $request): Response
     {
-        $form = $this->createForm(CreateRestaurantType::class);
+        $premises = new Premises();
+        $form = $this->createForm(CreateRestaurantType::class, $premises);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->persist($form->getData());
-            $this->entityManager->flush();
+            $this->dispatcher->dispatch(new CreateRestaurantEvent($premises), CreateRestaurantEvent::NAME);
 
             return $this->redirectToRoute('app_restaurant_list');
         }
