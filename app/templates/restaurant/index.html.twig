@@ -4,7 +4,9 @@
     {% for restaurant in restaurants %}
         <div>
             <h2>{{ restaurant.name }}</h2>
-            <a class="btn btn-info" href="{{ path('app_restaurant_info', {'id': restaurant.id}) }}">more info</a>
+            {% if is_granted('RESTAURANT_ADMIN', restaurant) %}
+                <a class="btn btn-info" href="{{ path('app_restaurant_info', {'id': restaurant.id}) }}">more info</a>
+            {% endif %}
         </div>
     {% else %}
         <p>No restaurants available</p>
