@@ -29,6 +29,9 @@ restart: ## Restart project
 open: ## Open container
 	docker-compose exec -u 1000 $(filter-out $@,$(MAKECMDGOALS)) bash
 
+db-diff: ## Run create migration diff
+	docker-compose exec -u 1000 php bin/console doctrine:migrations:diff --no-interaction
+
 db-migrate: ## Run doctrine migrations
 	docker-compose exec -u 1000 php bin/console doctrine:database:create --no-interaction --if-not-exists
 	docker-compose exec -u 1000 php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
