@@ -2,8 +2,10 @@
 
 namespace App\EventSubscriber;
 
+use App\Entity\UserRole;
 use App\Event\RegisterUserEvent;
 use App\Repository\UserRepository;
+use App\Repository\UserRoleRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -12,7 +14,8 @@ class RegisterUserSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private UserRepository $repository,
-        private UserPasswordHasherInterface $passwordHasher
+        private UserPasswordHasherInterface $passwordHasher,
+        private UserRoleRepository $userRoleRepository
     ) {
     }
 
@@ -31,7 +34,10 @@ class RegisterUserSubscriber implements EventSubscriberInterface
             throw new \LogicException('Password don\'t match');
         }
 
-        $user->eraseCredentials();
+        $userRole = $this->userRoleRepository->findOneBy(['role' => UserRole::USER]);
+        $user
+            ->addRole($userRole)
+            ->eraseCredentials();
         $this->repository
             ->save($user)
             ->flush();

@@ -5,7 +5,6 @@ security:
         app_user_provider:
             entity:
                 class: App\Entity\User
-                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -27,7 +26,9 @@ security:
                 - App\Security\SocialAuthenticator
             entry_point: form_login
     access_control:
-
+    access_decision_manager:
+        strategy: unanimous
+        allow_if_all_abstain: false
 when@test:
     security:
         password_hashers:
