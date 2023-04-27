@@ -12,10 +12,3 @@ services:
 
     App\Migrations\:
         resource: '../migrations/'
-
-    security.role_hierarchy:
-        class: 'App\Security\RoleHierarchy'
-        arguments:
-          $hierarchy: '%security.role_hierarchy.roles%'
-
-    Symfony\Component\Security\Core\Role\RoleHierarchyInterface: '@security.role_hierarchy'

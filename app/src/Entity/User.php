@@ -169,7 +169,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        return $this->roles->toArray();
+        return $this->roles
+            ->map(function (UserRole $role) {
+                return (string)$role;
+            })
+            ->toArray();
     }
 
     public function getRolesCollection(): Collection
