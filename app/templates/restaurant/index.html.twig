@@ -1,14 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% for restaurant in restaurants %}
-        <div>
-            <h2>{{ restaurant.name }}</h2>
-            {% if is_granted('RESTAURANT_ADMIN', restaurant) %}
-                <a class="btn btn-info" href="{{ path('app_restaurant_info', {'id': restaurant.id}) }}">more info</a>
-            {% endif %}
-        </div>
-    {% else %}
-        <p>No restaurants available</p>
-    {% endfor %}
+    <div class="restaurants-wrapper">
+        {% for restaurant in restaurants %}
+            <div>
+                <h2>{{ restaurant.name }}</h2>
+                {% if is_granted('RESTAURANT_ADMIN', restaurant) %}
+                    <a class="btn btn-info" href="{{ path('app_restaurant_info', {'id': restaurant.id}) }}">more info</a>
+                {% endif %}
+            </div>
+        {% else %}
+            <p>No restaurants available</p>
+        {% endfor %}
+    </div>
 {% endblock %}
