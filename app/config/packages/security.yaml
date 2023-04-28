@@ -28,7 +28,7 @@ security:
     access_control:
     access_decision_manager:
         strategy: unanimous
-        allow_if_all_abstain: false
+        allow_if_all_abstain: true
 when@test:
     security:
         password_hashers:

@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Attribute\NotFoundRedirect;
 use App\Entity\Premises;
 use App\Entity\Restaurant;
 use App\Entity\UserRole;
 use App\Event\CreateRestaurantEvent;
 use App\Form\CreateRestaurantType;
+use App\Security\Voter\RestaurantAdminVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -33,12 +35,10 @@ class RestaurantController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_restaurant_info', requirements: ['id' => '\d+'], methods: [Request::METHOD_GET])]
+    #[IsGranted(RestaurantAdminVoter::RESTAURANT_ADMIN, subject: 'restaurant')]
+    #[NotFoundRedirect(path: 'app_restaurant_list', scope: 'restaurant')]
     public function info(?Restaurant $restaurant): Response
     {
-        if (!$restaurant) {
-            return $this->redirectToRoute('app_restaurant_list');
-        }
-
         return $this->render('restaurant/info.html.twig', [
             'restaurant' => $restaurant,
         ]);
