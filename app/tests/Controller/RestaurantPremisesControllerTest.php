@@ -53,6 +53,7 @@ class RestaurantPremisesControllerTest extends WebTestCase
         $doctrine->persist($restaurant);
         $doctrine->flush();
 
+        $this->client->loginUser($restaurant->getEmployees()->get(0)->getEmployee());
         $crawler = $this->client->request(Request::METHOD_GET, "/premises/{$restaurant->getId()}/add");
         $form = $crawler->selectButton('create')->form([
             'premises' => [

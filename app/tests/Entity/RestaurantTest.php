@@ -11,7 +11,8 @@ class RestaurantTest extends KernelTestCase
     public static function createValidRestaurant(): Restaurant
     {
         return (new Restaurant())
-            ->setName(uniqid('name'));
+            ->setName(uniqid('name'))
+            ->addEmployee(RestaurantEmployeeTest::createValidRestaurantEmployee());
     }
 
     public function testValidRestaurantEntity(): void

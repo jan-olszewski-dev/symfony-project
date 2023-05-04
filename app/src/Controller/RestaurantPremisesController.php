@@ -31,7 +31,7 @@ class RestaurantPremisesController extends AbstractController
     }
 
     #[Route('/add', name: 'app_premises_add', methods: [Request::METHOD_GET, Request::METHOD_POST])]
-    #[IsGranted(RestaurantAdminVoter::RESTAURANT_ADMIN, subject: Restaurant::class)]
+    #[IsGranted(RestaurantAdminVoter::RESTAURANT_ADMIN, subject: 'restaurant')]
     public function add(Restaurant $restaurant, Request $request): Response
     {
         $premises = new Premises();

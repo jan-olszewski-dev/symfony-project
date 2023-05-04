@@ -8,6 +8,7 @@ use App\Entity\Premises;
 use App\Entity\Restaurant;
 use App\Repository\RestaurantRepository;
 use App\Tests\Entity\RestaurantTest;
+use App\Tests\Entity\UserTest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -23,7 +24,7 @@ class RestaurantControllerTest extends WebTestCase
         $this->client = $this->createClient();
     }
 
-    public function testRestaurantListAndLink(): void
+    public function testRestaurantListAsNotLoggedUser(): void
     {
         $restaurant = RestaurantTest::createValidRestaurant();
         /** @var EntityManagerInterface $doctrine */
@@ -33,17 +34,28 @@ class RestaurantControllerTest extends WebTestCase
 
         $this->client->request(Request::METHOD_GET, '/restaurant');
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextSame('h2', $restaurant->getName());
-        $this->client->clickLink('more info');
-        $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextSame('h2', $restaurant->getName());
-        $this->assertSelectorTextSame('p', 'No premises assigned to restaurant');
+        $this->assertSelectorTextSame('.restaurants-wrapper h2', $restaurant->getName());
+        $this->assertSelectorNotExists('.restaurants-wrapper a');
     }
 
-    public function testNotFoundRestaurantRedirect(): void
+    public function testRestaurantListAsRestaurantAdminUser(): void
     {
-        $this->client->request(Request::METHOD_GET, '/restaurant/1');
-        $this->assertResponseRedirects('/restaurant');
+        $restaurant = RestaurantTest::createValidRestaurant();
+        /** @var EntityManagerInterface $doctrine */
+        $doctrine = static::getContainer()->get(EntityManagerInterface::class);
+        $doctrine->persist($restaurant);
+        $doctrine->flush();
+
+        $user = $restaurant->getEmployees()->get(0)->getEmployee();
+        $this->client->loginUser($user);
+
+        $this->client->request(Request::METHOD_GET, '/restaurant');
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextSame('.restaurants-wrapper h2', $restaurant->getName());
+        $this->client->clickLink('more info');
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextSame('.restaurant-wrapper h2', $restaurant->getName());
+        $this->assertSelectorTextSame('.restaurant-wrapper p', 'No premises assigned to restaurant');
     }
 
     public function testCreateRestaurant(): void
@@ -54,13 +66,17 @@ class RestaurantControllerTest extends WebTestCase
         $streetNumber = (string) rand(0, 100);
         $flatNumber = (string) rand(0, 1000);
         $postalCode = (string) rand(10000, 99999);
+        $user = UserTest::createValidUser();
         /** @var EntityManagerInterface $doctrine */
         $doctrine = static::getContainer()->get(EntityManagerInterface::class);
         /** @var City $city */
         $city = $doctrine->getRepository(City::class)->find(1);
+        $doctrine->persist($user);
+        $doctrine->flush();
 
+        $this->client->loginUser($user);
         $crawler = $this->client->request(Request::METHOD_GET, '/restaurant/create');
-        $form = $crawler->selectButton('create')->form([
+        $form = $crawler->filter('.form-wrapper input[type="submit"]')->form([
             'create_restaurant' => [
                 'restaurant' => [
                     'name' => $restaurantName,

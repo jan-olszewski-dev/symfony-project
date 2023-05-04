@@ -3,6 +3,8 @@
 namespace App\Tests\Entity;
 
 use App\Entity\User;
+use App\Entity\UserRole;
+use App\Repository\UserRoleRepository;
 use League\OAuth2\Client\Provider\FacebookUser;
 use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Provider\LinkedInResourceOwner;
@@ -26,6 +28,11 @@ class UserTest extends KernelTestCase
         $hasher = static::getContainer()->get(UserPasswordHasherInterface::class);
         $password = $hasher->hashPassword($user, 'zaq1@WSX');
         $user->setPassword($password);
+
+        /** @var UserRoleRepository $userRoleRepository */
+        $userRoleRepository = static::getContainer()->get(UserRoleRepository::class);
+        $userRole = $userRoleRepository->findOneBy(['role' => UserRole::USER]);
+        $user->addRole($userRole);
 
         return $user;
     }
