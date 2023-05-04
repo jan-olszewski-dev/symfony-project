@@ -1,0 +1,15 @@
+name: "gitlab-sync"
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: git remote add polcodeGitlab https://${{ secrets.GITLAB_PROJECT_TOKEN_NAME }}:${{ secrets.GITLAB_PROJECT_TOKEN }}@gitlab.polcode.com/jan.olszewski/symfony-project.git
+      - run: git fetch --unshallow
+      - run: git push -f polcodeGitlab
