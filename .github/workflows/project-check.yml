@@ -1,6 +1,5 @@
 name: "project-check"
 on: ["push"]
-run-name: "Changes provided into master by @${{ github.actor }}"
 defaults:
   run:
     working-directory: app
