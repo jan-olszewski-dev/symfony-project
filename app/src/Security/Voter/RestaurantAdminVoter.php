@@ -21,6 +21,7 @@ class RestaurantAdminVoter extends Voter
 
     /**
      * @param Restaurant $subject
+     *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool

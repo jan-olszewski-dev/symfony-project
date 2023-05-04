@@ -6,6 +6,7 @@ use App\Entity\Address;
 use App\Entity\City;
 use App\Entity\Premises;
 use App\Entity\Restaurant;
+use App\Entity\User;
 use App\Repository\RestaurantRepository;
 use App\Tests\Entity\RestaurantTest;
 use App\Tests\Entity\UserTest;
@@ -45,8 +46,8 @@ class RestaurantControllerTest extends WebTestCase
         $doctrine = static::getContainer()->get(EntityManagerInterface::class);
         $doctrine->persist($restaurant);
         $doctrine->flush();
-
-        $user = $restaurant->getEmployees()->get(0)->getEmployee();
+        /** @var User $user */
+        $user = $restaurant->getEmployees()->get(0)?->getEmployee();
         $this->client->loginUser($user);
 
         $this->client->request(Request::METHOD_GET, '/restaurant');

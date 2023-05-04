@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
 use App\Tests\Entity\UserTest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -51,7 +52,9 @@ class AuthorizationControllerTest extends WebTestCase
         /** @var UsageTrackingTokenStorage $token */
         $token = $this->getContainer()->get('security.token_storage');
         $user->eraseCredentials();
-        $this->assertEquals($user->getId(), $token->getToken()?->getUser()?->getId());
+        /** @var User|null $loggedUser */
+        $loggedUser = $token->getToken()?->getUser();
+        $this->assertEquals($user->getId(), $loggedUser?->getId());
     }
 
     public function testLogoutRedirect(): void

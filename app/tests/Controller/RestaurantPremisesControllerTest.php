@@ -6,6 +6,7 @@ use App\Entity\Address;
 use App\Entity\City;
 use App\Entity\Premises;
 use App\Entity\Restaurant;
+use App\Entity\User;
 use App\Repository\RestaurantRepository;
 use App\Tests\Entity\PremisesTest;
 use App\Tests\Entity\RestaurantTest;
@@ -52,8 +53,9 @@ class RestaurantPremisesControllerTest extends WebTestCase
         $city = $doctrine->getRepository(City::class)->find(1);
         $doctrine->persist($restaurant);
         $doctrine->flush();
-
-        $this->client->loginUser($restaurant->getEmployees()->get(0)->getEmployee());
+        /** @var User $user */
+        $user = $restaurant->getEmployees()->get(0)?->getEmployee();
+        $this->client->loginUser($user);
         $crawler = $this->client->request(Request::METHOD_GET, "/premises/{$restaurant->getId()}/add");
         $form = $crawler->selectButton('create')->form([
             'premises' => [

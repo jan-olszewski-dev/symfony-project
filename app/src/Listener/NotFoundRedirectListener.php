@@ -5,9 +5,11 @@ namespace App\Listener;
 use App\Attribute\NotFoundRedirect;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 use Symfony\Component\Routing\RouterInterface;
 
+/** @SuppressWarnings(PHPMD.MissingImport) */
 #[AsEventListener(event: ControllerArgumentsEvent::class)]
 class NotFoundRedirectListener
 {
@@ -15,22 +17,14 @@ class NotFoundRedirectListener
     {
     }
 
-    public function __invoke(ControllerArgumentsEvent $event)
+    public function __invoke(ControllerArgumentsEvent $event): ?Response
     {
-        if (\is_array($attributes = $event->getAttributes()[NotFoundRedirect::class] ?? null)) {
+        $attributes = $event->getAttributes()[NotFoundRedirect::class] ?? null;
+
+        if (\is_array($attributes)) {
             /** @var NotFoundRedirect $attribute */
             foreach ($attributes as $attribute) {
-                if (!\array_key_exists($attribute->scope, $event->getNamedArguments())) {
-                    $message = sprintf(
-                        'Invalid using of %s attribute in %s::%s. There is no any argument with name "%s"',
-                        $attribute::class,
-                        \get_class($event->getController()[0]),
-                        $event->getController()[1],
-                        $attribute->scope
-                    );
-
-                    throw new \LogicException($message);
-                }
+                $this->validAttributeUsage($attribute, $event);
 
                 if (\is_null($event->getNamedArguments()[$attribute->scope])) {
                     $redirect = $this->router->generate($attribute->path);
@@ -38,6 +32,27 @@ class NotFoundRedirectListener
                     return (new RedirectResponse($redirect))->send();
                 }
             }
+        }
+
+        return null;
+    }
+
+    private function validAttributeUsage(NotFoundRedirect $attribute, ControllerArgumentsEvent $event): void
+    {
+        if (!\array_key_exists($attribute->scope, $event->getNamedArguments())) {
+            $controller = $event->getController();
+            $representative = \is_array($controller) ?
+                sprintf('%s::%s', \get_class($controller[0]), $controller[1]) :
+                get_debug_type($controller);
+
+            $message = sprintf(
+                'Invalid using of %s attribute in %s. There is no any argument with name "%s"',
+                $attribute::class,
+                $representative,
+                $attribute->scope
+            );
+
+            throw new \LogicException($message);
         }
     }
 }

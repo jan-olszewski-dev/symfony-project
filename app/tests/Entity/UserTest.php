@@ -31,6 +31,7 @@ class UserTest extends KernelTestCase
 
         /** @var UserRoleRepository $userRoleRepository */
         $userRoleRepository = static::getContainer()->get(UserRoleRepository::class);
+        /** @var UserRole $userRole */
         $userRole = $userRoleRepository->findOneBy(['role' => UserRole::USER]);
         $user->addRole($userRole);
 

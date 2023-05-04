@@ -13,6 +13,7 @@ class RestaurantEmployeeTest extends KernelTestCase
     {
         /** @var RestaurantRoleRepository $userRoleRepository */
         $userRoleRepository = static::getContainer()->get(RestaurantRoleRepository::class);
+        /** @var RestaurantRole $employeeRole */
         $employeeRole = $userRoleRepository->findOneBy(['role' => RestaurantRole::ADMIN]);
 
         return (new RestaurantEmployee())
@@ -24,6 +25,7 @@ class RestaurantEmployeeTest extends KernelTestCase
     {
         /** @var RestaurantRoleRepository $userRoleRepository */
         $userRoleRepository = static::getContainer()->get(RestaurantRoleRepository::class);
+        /** @var RestaurantRole $employeeRole */
         $employeeRole = $userRoleRepository->findOneBy(['role' => RestaurantRole::ADMIN]);
         $employee = UserTest::createValidUser();
         $restaurant = RestaurantTest::createValidRestaurant();
