@@ -1,0 +1,32 @@
+{% block header %}
+    <header class="d-flex justify-content-end">
+        <nav class="d-flex flex-row align-items-center">
+            <div class="nav-option {{ app.request.attributes.get('_route') == 'app_home_page' ? 'active' : ''}}">
+                <a href="{{ path('app_home_page') }}">Home page</a>
+            </div>
+            <div class="nav-option {{ app.request.attributes.get('_route') == 'app_restaurant_list' ? 'active' : ''}}">
+                <a class="dropdown" href="#" role="button" id="nav-restaurant-dropdown"
+                   data-bs-toggle="dropdown" aria-expanded="false">Restaurant</a>
+                <ul class="dropdown-menu" aria-labelledby="nav-restaurant-dropdown">
+                        <li><a href="{{ path('app_restaurant_list') }}" class="dropdown-item">List</a></li>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <li><a href="{{ path('app_restaurant_create') }}" class="dropdown-item">Create</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <div class="nav-option">
+                    <a class="dropdown" href="#" role="button" id="nav-account-dropdown"
+                       data-bs-toggle="dropdown" aria-expanded="false">Account</a>
+                    <ul class="dropdown-menu" aria-labelledby="nav-account-dropdown">
+                        <li><a href="{{ path('app_logout') }}" class="dropdown-item">Logout</a></li>
+                    </ul>
+                </div>
+            {% else %}
+                <div class="nav-option">
+                    <a href="{{ path('app_login') }}" class="dropdown-item">Sign in</a>
+                </div>
+            {% endif %}
+        </nav>
+    </header>
+{% endblock %}

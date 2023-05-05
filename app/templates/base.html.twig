@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Project{% endblock %}</title>
-    <link rel="icon"
-          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
@@ -14,32 +12,16 @@
     {% endblock %}
 </head>
 <body>
-<header>
-    <nav>
-        <ul>
-            <li>
-                <a href="{{ path('app_home_page') }}">Home page</a>
-            </li>
-            {% if is_granted('ROLE_USER') %}
-                <li>
-                    <a href="{{ path('app_restaurant_create') }}">Create restaurant</a>
-                </li>
-            {% endif %}
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <li>
-                    <a href="{{ path('app_logout') }}">Logout</a>
-                </li>
-            {% else %}
-                <li>
-                    <a href="{{ path('app_login') }}">Login</a>
-                </li>
-                <li>
-                    <a href="{{ path('app_register_user') }}">Register</a>
-                </li>
-            {% endif %}
-        </ul>
-    </nav>
-</header>
+{% if block('header') is empty %}
+    {% include 'header.html.twig' %}
+{% endif %}
+{% block header %}{% endblock %}
+
 {% block body %}{% endblock %}
+
+{% if block('footer') is empty %}
+    {% include 'footer.html.twig' %}
+{% endif %}
+{% block footer %}{% endblock %}
 </body>
 </html>
