@@ -39,4 +39,14 @@ class RestaurantRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->flush();
     }
+
+    /** @return Restaurant[]|null */
+    public function findByNameLike(string $name): ?array
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.name like :name')
+            ->setParameter('name', "%$name%")
+            ->getQuery()
+            ->getResult();
+    }
 }

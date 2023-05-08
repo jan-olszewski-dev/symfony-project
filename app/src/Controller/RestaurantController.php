@@ -8,6 +8,7 @@ use App\Entity\Restaurant;
 use App\Entity\UserRole;
 use App\Event\CreateRestaurantEvent;
 use App\Form\CreateRestaurantType;
+use App\Repository\RestaurantRepository;
 use App\Security\Voter\RestaurantAdminVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,12 +27,14 @@ class RestaurantController extends AbstractController
     ) {
     }
 
-    #[Route('', name: 'app_restaurant_list', methods: [Request::METHOD_GET])]
-    public function index(): Response
+    #[Route('/search/{name?}', name: 'app_restaurant_list', methods: [Request::METHOD_GET])]
+    public function index(?string $name): Response
     {
-        return $this->render('restaurant/index.html.twig', [
-            'restaurants' => $this->entityManager->getRepository(Restaurant::class)->findAll(),
-        ]);
+        /** @var RestaurantRepository $repository */
+        $repository = $this->entityManager->getRepository(Restaurant::class);
+        $restaurants = $name ? $repository->findByNameLike($name) : $repository->findAll();
+
+        return $this->render('restaurant/index.html.twig', ['restaurants' => $restaurants]);
     }
 
     #[Route('/{id}', name: 'app_restaurant_info', requirements: ['id' => '\d+'], methods: [Request::METHOD_GET])]
