@@ -1,18 +1,27 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('home_page') }}
+{% endblock %}
+
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/html/src/Controller/HomePageController.php'|file_link(0) }}">src/Controller/HomePageController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/html/templates/home_page/index.html.twig'|file_link(0) }}">templates/home_page/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <div class="search-container">
+        <div class="search-form">
+            <h2 class="text-center">Welcome in restaurant project</h2>
+            <div class="col-10 d-flex justify-content-center" data-controller="search-restaurant"
+                 data-search-restaurant-url-value="{{ path('app_restaurant_list') }}">
+                <input data-search-restaurant-target="name"
+                       placeholder="Find your restaurant to make an order" type="text"
+                       data-action="keydown.enter->search-restaurant#search"/>
+                <button class="btn btn-primary" data-action="click->search-restaurant#search">Search</button>
+            </div>
+        </div>
+        <div class="image-container">
+            <img src="{{ asset('build/images/burger.png') }}" alt="burger">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                <polygon points="0 0, 0 100, 100 0, 100 0"></polygon>
+            </svg>
+        </div>
+    </div>
 {% endblock %}
