@@ -1,5 +1,6 @@
 .search-container {
   display: flex;
+  position: relative;
 
   .search-form, .image-container {
     padding: 5rem 0;
@@ -54,6 +55,10 @@
     background: #0b99ce;
     position: relative;
 
+    img {
+      width: 20rem;
+    }
+
     svg {
       position: absolute;
       width: 20%;
@@ -62,9 +67,35 @@
       top: 0;
       fill: #f5f3f1;
     }
+  }
+}
 
-    img {
-      width: 20rem;
-    }
+.flow-introduction h2, .description h2 {
+  color: #0b99ce;
+  font-weight: bold;
+}
+
+.flow-introduction p, .description p {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.description {
+  color: #b1b6b9;
+  background: #fefffe;
+}
+
+.flow-introduction {
+  position: relative;
+  color: #ffffff;
+  background: #173046;
+  background: linear-gradient(90deg, #173046 10%, #171A25 100%);
+
+  img {
+    position: absolute;
+    top: -3rem;
+    left: 3rem;
+    width: 400px;
+    transform: scaleX(-1);
   }
 }
