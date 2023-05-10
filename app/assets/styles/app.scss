@@ -1,3 +1,9 @@
 @import "~bootstrap/scss/bootstrap";
 @import "header";
 @import "footer";
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
