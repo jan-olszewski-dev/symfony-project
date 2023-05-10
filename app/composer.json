@@ -85,6 +85,7 @@
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^7.2",
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
         "friendsofphp/php-cs-fixer": "*",
         "mockery/mockery": "*",
         "phpmd/phpmd": "2.13.0",
