@@ -70,7 +70,7 @@
   }
 }
 
-.flow-introduction h2, .description h2 {
+.flow-introduction h2, .description h2, .clients-review h2 {
   color: #0b99ce;
   font-weight: bold;
 }
@@ -97,5 +97,18 @@
     left: 3rem;
     width: 400px;
     transform: scaleX(-1);
+  }
+
+}
+
+.clients-review {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 1rem 0 5rem;
+
+  p {
+    width: 30% !important;
+    margin: 0;
   }
 }
