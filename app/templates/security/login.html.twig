@@ -1,14 +1,47 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('security/forms') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('tooltip') }}
+{% endblock %}
+
 {% block body %}
-    {{ form_start(form) }}
-        {% if error %}
-            <div>{{ error.message }}</div>
-        {% endif %}
-        {{ form_widget(form) }}
-        <input type="submit" value="send">
-    {{ form_end(form) }}
-    <a href="{{ path('app_social_login', {'client': 'google'}) }}">Sign in by Google</a>
-    <a href="{{ path('app_social_login', {'client': 'linkedin'}) }}">Sign in by LinkedIn</a>
-    <a href="{{ path('app_social_login', {'client': 'facebook'}) }}">Sign in by Facebook</a>
+    <div class="col-4 mx-auto mt-5 mb-5">
+        <div class="container login-form-wrapper">
+            <h2>Login in</h2>
+            {{ form_start(form) }}
+            {% if error %}
+                <div>{{ error.message }}</div>
+            {% endif %}
+            {{ form_widget(form) }}
+            <input class="btn btn-primary d-block ml-auto mr-0" type="submit" value="Sign in">
+            {{ form_end(form) }}
+        </div>
+        <div class="social-sign-in container text-center mt-5">
+            <p class="m-0">Or sign in using</p>
+            <ul>
+                <li>
+                    <a href="{{ path('app_social_login', {'client': 'google'}) }}" data-toggle="tooltip"
+                       data-placement="bottom" title="Sign in using Google"><i class="bi bi-google text-danger"></i></a>
+                </li>
+                <li>
+                    <a href="{{ path('app_social_login', {'client': 'linkedin'}) }}" data-toggle="tooltip"
+                       data-placement="bottom" title="Sign in using LinkedIn"><i class="bi bi-linkedin"></i></a>
+                </li>
+                <li>
+                    <a href="{{ path('app_social_login', {'client': 'facebook'}) }}" data-toggle="tooltip"
+                       data-placement="bottom" title="Sign in using Facebook"><i class="bi bi-facebook"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="container text-center mt-2">
+            <p class="m-0">Or sign up using</p>
+            <a href="{{ path('app_register_user') }}" class="btn btn-sm btn-secondary mt-2">Sign up</a>
+        </div>
+    </div>
 {% endblock %}

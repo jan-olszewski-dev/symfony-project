@@ -1,12 +1,41 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('security/forms') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('tooltip') }}
+{% endblock %}
+
 {% block body %}
-    {{ form_start(form) }}
-        {{ form_errors(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Send"/>
-    {{ form_end(form) }}
-    <a href="{{ path('app_social_login', {'client': 'google'}) }}">Sign in by Google</a>
-    <a href="{{ path('app_social_login', {'client': 'linkedin'}) }}">Sign in by LinkedIn</a>
-    <a href="{{ path('app_social_login', {'client': 'facebook'}) }}">Sign in by Facebook</a>
+    <div class="col-4 mx-auto mt-5 mb-5">
+        <div class="container register-form-wrapper">
+            <h2>Register</h2>
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
+            <input class="btn btn-primary d-block ml-auto mr-0" type="submit" value="Sign up">
+            {{ form_end(form) }}
+        </div>
+        <div class="social-sign-in container text-center mt-5">
+            <p class="m-0">Or sign up using</p>
+            <ul>
+                <li>
+                    <a href="{{ path('app_social_login', {'client': 'google'}) }}" data-toggle="tooltip"
+                       data-placement="bottom" title="Sign up using Google"><i class="bi bi-google text-danger"></i></a>
+                </li>
+                <li>
+                    <a href="{{ path('app_social_login', {'client': 'linkedin'}) }}" data-toggle="tooltip"
+                       data-placement="bottom" title="Sign up using LinkedIn"><i class="bi bi-linkedin"></i></a>
+                </li>
+                <li>
+                    <a href="{{ path('app_social_login', {'client': 'facebook'}) }}" data-toggle="tooltip"
+                       data-placement="bottom" title="Sign up using Facebook"><i class="bi bi-facebook"></i></a>
+                </li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}
