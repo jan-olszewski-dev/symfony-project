@@ -41,7 +41,7 @@ class RegisterUserControllerTest extends WebTestCase
         $firstName = uniqid('firstName');
         $lastName = uniqid('lastName');
         $crawler = $this->client->request(Request::METHOD_GET, '/register');
-        $form = $crawler->selectButton('Send')->form([
+        $form = $crawler->selectButton('Sign up')->form([
             'register_user' => [
                 'email' => $email,
                 'plainPassword' => [

@@ -42,7 +42,7 @@ class AuthorizationControllerTest extends WebTestCase
         $doctrine->flush();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/auth/login');
-        $form = $crawler->selectButton('send')->form([
+        $form = $crawler->selectButton('Sign in')->form([
             'email' => $user->getEmail(),
             'password' => $user->getPlainPassword(),
         ]);
