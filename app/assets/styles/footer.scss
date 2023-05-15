@@ -26,28 +26,28 @@ footer {
       z-index: 1000;
       opacity: 1;
       bottom: 0;
-      animation: animateWaves 4s linear infinite;
+      animation: animateWaves 6s linear infinite;
     }
 
     &:nth-child(2) {
       z-index: 999;
       opacity: 0.5;
       bottom: 10px;
-      animation: animate 4s linear infinite !important;
+      animation: animate 6s linear infinite !important;
     }
 
     &:nth-child(3) {
       z-index: 1000;
       opacity: 0.2;
       bottom: 15px;
-      animation: animateWaves 3s linear infinite;
+      animation: animateWaves 5s linear infinite;
     }
 
     &:nth-child(4) {
       z-index: 999;
       opacity: 0.7;
       bottom: 20px;
-      animation: animate 3s linear infinite;
+      animation: animate 5s linear infinite;
     }
 
     @keyframes animateWaves {
@@ -73,10 +73,12 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
 
     li {
       list-style: none;
+      margin: 1rem;
 
       a {
         color: #fff
