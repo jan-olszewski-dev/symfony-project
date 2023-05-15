@@ -45,7 +45,7 @@ db-migrate: ## Run doctrine migrations
 	docker-compose exec -u 1000 php bin/console doctrine:migrations:migrate --env test --no-interaction --allow-no-migration
 
 db-fixture: ## Run doctrine fixtures with append
-	docker-compose exec -u php bin/console doctrine:fixture:load --append
+	docker-compose exec -u 1000 php bin/console doctrine:fixture:load --append
 
 test: ## Run test
 	docker-compose exec -u 1000 php bin/phpunit --filter "$(filter-out $@,$(MAKECMDGOALS))"
