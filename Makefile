@@ -67,4 +67,4 @@ phpcs: ## PHP Code Sniffer fix
 	docker-compose exec php composer phpcs
 
 composer-install: ## Composer install
-	docker-compose exec -u 1000 php composer install
+	docker-compose exec php composer install
