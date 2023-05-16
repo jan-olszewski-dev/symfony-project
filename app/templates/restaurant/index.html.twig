@@ -1,12 +1,31 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .restaurants-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 1rem 3rem 5rem;
+        }
+
+        .restaurants-wrapper div {
+            text-align: center;
+            margin: 1rem;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     <div class="restaurants-wrapper">
         {% for restaurant in restaurants %}
             <div>
                 <h2>{{ restaurant.name }}</h2>
                 {% if is_granted('RESTAURANT_ADMIN', restaurant) %}
-                    <a class="btn btn-info" href="{{ path('app_restaurant_info', {'id': restaurant.id}) }}">more info</a>
+                    <a class="btn btn-info" href="{{ path('app_restaurant_info', {'id': restaurant.id}) }}">
+                        more info
+                    </a>
                 {% endif %}
             </div>
         {% else %}
