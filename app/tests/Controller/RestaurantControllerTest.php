@@ -33,7 +33,7 @@ class RestaurantControllerTest extends WebTestCase
         $doctrine->persist($restaurant);
         $doctrine->flush();
 
-        $this->client->request(Request::METHOD_GET, '/restaurant');
+        $this->client->request(Request::METHOD_GET, '/restaurant/search');
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextSame('.restaurants-wrapper h2', $restaurant->getName());
         $this->assertSelectorNotExists('.restaurants-wrapper a');
@@ -50,7 +50,7 @@ class RestaurantControllerTest extends WebTestCase
         $user = $restaurant->getEmployees()->get(0)?->getEmployee();
         $this->client->loginUser($user);
 
-        $this->client->request(Request::METHOD_GET, '/restaurant');
+        $this->client->request(Request::METHOD_GET, '/restaurant/search');
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextSame('.restaurants-wrapper h2', $restaurant->getName());
         $this->client->clickLink('more info');
@@ -94,7 +94,7 @@ class RestaurantControllerTest extends WebTestCase
         ]);
 
         $this->client->submit($form);
-        $this->assertResponseRedirects('/restaurant');
+        $this->assertResponseRedirects('/restaurant/search');
 
         /** @var EntityManagerInterface $doctrine */
         $doctrine = static::getContainer()->get(EntityManagerInterface::class);
