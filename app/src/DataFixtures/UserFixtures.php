@@ -16,8 +16,12 @@ class UserFixtures extends Fixture
 
     public function __construct(private UserPasswordHasherInterface $passwordHasher, UserRoleRepository $roleRepository)
     {
-        $this->userRole = $roleRepository->findOneBy(['role' => UserRole::USER]);
-        $this->adminRole = $roleRepository->findOneBy(['role' => UserRole::ADMIN]);
+        /** @var UserRole $userRole */
+        $userRole = $roleRepository->findOneBy(['role' => UserRole::USER]);
+        $this->userRole = $userRole;
+        /** @var UserRole $adminRole */
+        $adminRole = $roleRepository->findOneBy(['role' => UserRole::ADMIN]);
+        $this->adminRole = $adminRole;
     }
 
     public function load(ObjectManager $manager): void
