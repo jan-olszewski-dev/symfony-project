@@ -37,6 +37,7 @@ db-reset: ## Reset database to init version
 	docker-compose exec -u 1000 php bin/console doctrine:database:drop --force
 	docker-compose exec -u 1000 php bin/console doctrine:database:drop --env test --force
 	$(MAKE) db-migrate
+	$(MAKE) db-fixture
 
 db-migrate: ## Run doctrine migrations
 	docker-compose exec -u 1000 php bin/console doctrine:database:create --no-interaction --if-not-exists
