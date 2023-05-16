@@ -46,7 +46,7 @@ class RestaurantPremisesController extends AbstractController
             return $this->redirectToRoute('app_premises', ['restaurant' => $restaurant->getId()]);
         }
 
-        return $this->render('defaultForm.html.twig', [
+        return $this->render('form.html.twig', [
             'form' => $form,
         ]);
     }

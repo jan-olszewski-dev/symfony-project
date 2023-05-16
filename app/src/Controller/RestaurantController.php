@@ -61,7 +61,7 @@ class RestaurantController extends AbstractController
             return $this->redirectToRoute('app_restaurant_list');
         }
 
-        return $this->render('defaultForm.html.twig', [
+        return $this->render('restaurant/create.html.twig', [
             'form' => $form,
         ]);
     }

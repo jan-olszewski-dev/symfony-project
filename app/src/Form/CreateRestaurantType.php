@@ -14,7 +14,7 @@ class CreateRestaurantType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('restaurant', RestaurantType::class)
+            ->add('restaurant', RestaurantType::class, ['label' => 'Restaurant:'])
             ->add('name', TextType::class, ['label' => 'Local name'])
             ->add('address', AddressType::class, ['label' => 'Local\'s address:']);
     }

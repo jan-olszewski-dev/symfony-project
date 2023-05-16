@@ -57,7 +57,7 @@ class RestaurantPremisesControllerTest extends WebTestCase
         $user = $restaurant->getEmployees()->get(0)?->getEmployee();
         $this->client->loginUser($user);
         $crawler = $this->client->request(Request::METHOD_GET, "/premises/{$restaurant->getId()}/add");
-        $form = $crawler->selectButton('create')->form([
+        $form = $crawler->selectButton('Create')->form([
             'premises' => [
                 'name' => $localName,
                 'address' => [
