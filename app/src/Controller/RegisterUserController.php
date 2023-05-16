@@ -29,7 +29,7 @@ class RegisterUserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->dispatcher->dispatch(new RegisterUserEvent($form->getData()), RegisterUserEvent::NAME);
+            $this->dispatcher->dispatch(new RegisterUserEvent($form->getData()), RegisterUserEvent::REGISTER_USER);
 
             return $this->redirectToRoute('app_login');
         }

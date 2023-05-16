@@ -13,42 +13,52 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class RegisterUserSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private UserRepository $repository,
-        private UserPasswordHasherInterface $passwordHasher,
-        private UserRoleRepository $userRoleRepository
+        private readonly UserRepository $repository,
+        private readonly UserPasswordHasherInterface $passwordHasher,
+        private readonly UserRoleRepository $userRoleRepository
     ) {
+    }
+
+    public function checkIfUserExists(RegisterUserEvent $event): void
+    {
+        $user = $event->getUser();
+        $registeredUser = $this->repository->findOneBy(['email' => $user->getEmail()]);
+
+        if ($registeredUser) {
+            $event->stopPropagation();
+        }
     }
 
     public function onRegisterUserEventPre(RegisterUserEvent $event): void
     {
-        $user = $event->getUser();
-        $password = $this->passwordHasher->hashPassword($user, (string) $user->getPlainPassword());
-        $user->setPassword($password);
+        if (!$event->isPropagationStopped()) {
+            $user = $event->getUser();
+            $password = $this->passwordHasher->hashPassword($user, (string) $user->getPlainPassword());
+            $user->setPassword($password);
+        }
     }
 
     public function onRegisterUserEventPost(RegisterUserEvent $event): void
     {
-        $user = $event->getUser();
-
-        if (!$this->passwordHasher->isPasswordValid($user, (string) $user->getPlainPassword())) {
-            throw new \LogicException('Password don\'t match');
+        if (!$event->isPropagationStopped()) {
+            /** @var UserRole $userRole */
+            $userRole = $this->userRoleRepository->findOneBy(['role' => UserRole::USER]);
+            $user = $event->getUser()->addRole($userRole);
+            $user->eraseCredentials();
+            $this->repository->save($user)->flush();
         }
-
-        /** @var UserRole $userRole */
-        $userRole = $this->userRoleRepository->findOneBy(['role' => UserRole::USER]);
-        $user
-            ->addRole($userRole)
-            ->eraseCredentials();
-        $this->repository
-            ->save($user)
-            ->flush();
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            RegisterUserEvent::NAME => [
-                ['onRegisterUserEventPre', 10],
+            RegisterUserEvent::REGISTER_USER => [
+                ['checkIfUserExists', 10],
+                ['onRegisterUserEventPre', 0],
+                ['onRegisterUserEventPost', -10],
+            ],
+            RegisterUserEvent::REGISTER_SOCIAL_USER => [
+                ['checkIfUserExists', 10],
                 ['onRegisterUserEventPost', -10],
             ],
         ];

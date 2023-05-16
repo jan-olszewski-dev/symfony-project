@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Entity\User;
+use App\Event\RegisterUserEvent;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
@@ -10,6 +11,7 @@ use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
 use League\OAuth2\Client\Provider\FacebookUser;
 use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Provider\LinkedInResourceOwner;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,9 +36,10 @@ class SocialAuthenticator extends OAuth2Authenticator implements AuthenticationE
     ];
 
     public function __construct(
-        private ClientRegistry $clientRegistry,
-        private EntityManagerInterface $entityManager,
-        private RouterInterface $router
+        private readonly ClientRegistry $clientRegistry,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly RouterInterface $router,
+        private readonly EventDispatcherInterface $dispatcher
     ) {
     }
 
@@ -59,17 +62,6 @@ class SocialAuthenticator extends OAuth2Authenticator implements AuthenticationE
                 $socialUser = $client->fetchUserFromToken($accessToken);
                 /** @var UserRepository $repository */
                 $repository = $this->entityManager->getRepository(User::class);
-                $existingUser = match ($socialUser::class) {
-                    GoogleUser::class => $repository->findOneBy(['googleSubId' => $socialUser->getId()]),
-                    LinkedInResourceOwner::class => $repository->findOneBy(['linkedInSubId' => $socialUser->getId()]),
-                    FacebookUser::class => $repository->findOneBy(['facebookSubId' => $socialUser->getId()]),
-                    default => null,
-                };
-
-                if ($existingUser) {
-                    return $existingUser;
-                }
-
                 $user = $repository->findOneBy(['email' => $socialUser->getEmail()]);
                 $user = match ($socialUser::class) {
                     GoogleUser::class => $user ?
@@ -85,7 +77,7 @@ class SocialAuthenticator extends OAuth2Authenticator implements AuthenticationE
                 };
 
                 if ($user) {
-                    $repository->save($user)->flush();
+                    $this->dispatcher->dispatch(new RegisterUserEvent($user), RegisterUserEvent::REGISTER_SOCIAL_USER);
                 }
 
                 return $user;
