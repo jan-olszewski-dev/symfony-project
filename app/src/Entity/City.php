@@ -32,4 +32,10 @@ class City
 
         return $this;
     }
+
+    public function equals(self $other): bool
+    {
+        return $this->getId() === $other->getId() &&
+            $this->getName() === $other->getName();
+    }
 }
