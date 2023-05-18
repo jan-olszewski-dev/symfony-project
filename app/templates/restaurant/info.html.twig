@@ -32,9 +32,12 @@
                         <p class="mx-3 my-1">
                             {{ address.postalCode | slice(0,2) }}-{{ address.postalCode | slice(2, 3) }} {{ address.city.name }}
                         </p>
-                        <button class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Edit">
-                            <i class="bi bi-pen"></i>
-                        </button>
+                        {% if is_granted('RESTAURANT_ADMIN', restaurant) %}
+                            <a href="{{ path('app_premises_edit', {'restaurant': restaurant.id, 'id': premises.id}) }}"
+                               class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Edit">
+                                <i class="bi bi-pen"></i>
+                            </a>
+                        {% endif %}
                     </div>
                 {% else %}
                     <p>No premises assigned to restaurant</p>

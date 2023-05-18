@@ -25,6 +25,19 @@ class RestaurantPremisesController extends AbstractController
     public function add(Restaurant $restaurant, Request $request): Response
     {
         $premises = new Premises();
+
+        return $this->handlePremisesForm($premises, $request, $restaurant);
+    }
+
+    #[Route('/edit/{id}', name: 'app_premises_edit', requirements: ['id' => '\d+'], methods: [Request::METHOD_GET, Request::METHOD_POST])]
+    #[IsGranted(RestaurantAdminVoter::RESTAURANT_ADMIN, subject: 'restaurant')]
+    public function edit(Restaurant $restaurant, Premises $premises, Request $request): Response
+    {
+        return $this->handlePremisesForm($premises, $request, $restaurant);
+    }
+
+    public function handlePremisesForm(Premises $premises, Request $request, Restaurant $restaurant): Response
+    {
         $form = $this->createForm(PremisesType::class, $premises, ['attr' => ['class' => 'col-4 mx-auto']]);
         $form->handleRequest($request);
 
