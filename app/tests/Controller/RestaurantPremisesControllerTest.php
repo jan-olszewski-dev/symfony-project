@@ -8,7 +8,6 @@ use App\Entity\Premises;
 use App\Entity\Restaurant;
 use App\Entity\User;
 use App\Repository\RestaurantRepository;
-use App\Tests\Entity\PremisesTest;
 use App\Tests\Entity\RestaurantTest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;

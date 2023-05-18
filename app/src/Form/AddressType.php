@@ -23,7 +23,7 @@ class AddressType extends AbstractType
             ->add('city', EntityType::class, [
                 'class' => City::class,
                 'choice_label' => 'name',
-                'placeholder'   => 'Select option',
+                'placeholder' => 'Select option',
                 'query_builder' => function (EntityRepository $repository) {
                     return $repository->createQueryBuilder('c')
                         ->orderBy('c.name', 'ASC');
