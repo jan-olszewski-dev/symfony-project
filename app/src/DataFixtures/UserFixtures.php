@@ -30,6 +30,19 @@ class UserFixtures extends Fixture
         $manager->persist($testUser);
         $adminUser = $this->createAdminUser();
         $manager->persist($adminUser);
+
+        $password = $this->passwordHasher->hashPassword(new User(), 'zaq1@WSX');
+        for ($i = 1; $i <= 50; ++$i) {
+            $user = (new User())
+                ->setEmail("user$i@test.com")
+                ->setFirstName("User$i")
+                ->setLastName("Test")
+                ->setPassword($password)
+                ->addRole($this->userRole);
+
+            $manager->persist($user);
+        }
+
         $manager->flush();
     }
 
