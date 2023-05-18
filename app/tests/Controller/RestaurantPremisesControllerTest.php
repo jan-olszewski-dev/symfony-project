@@ -25,20 +25,6 @@ class RestaurantPremisesControllerTest extends WebTestCase
         $this->client = $this->createClient();
     }
 
-    public function testRestaurantPremisesList(): void
-    {
-        $premises = PremisesTest::createValidPremises();
-        /** @var EntityManagerInterface $doctrine */
-        $doctrine = static::getContainer()->get(EntityManagerInterface::class);
-        $doctrine->persist($premises);
-        $doctrine->flush();
-
-        $this->client->request(Request::METHOD_GET, "/premises/{$premises->getRestaurant()->getId()}");
-        $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextSame('h1', $premises->getRestaurant()->getName());
-        $this->assertSelectorTextSame('h2', $premises->getName());
-    }
-
     public function testAddPremises(): void
     {
         $restaurant = RestaurantTest::createValidRestaurant();
@@ -71,7 +57,7 @@ class RestaurantPremisesControllerTest extends WebTestCase
         ]);
 
         $this->client->submit($form);
-        $this->assertResponseRedirects("/premises/{$restaurant->getId()}");
+        $this->assertResponseRedirects("/restaurant/{$restaurant->getId()}");
 
         /** @var EntityManagerInterface $doctrine */
         $doctrine = static::getContainer()->get(EntityManagerInterface::class);
