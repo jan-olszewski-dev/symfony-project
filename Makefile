@@ -49,10 +49,10 @@ db-fixture: ## Run doctrine fixtures with append
 	docker-compose exec -u 1000 php bin/console doctrine:fixture:load --append
 
 test: ## Run test
-	docker-compose exec -u 1000 php bin/phpunit --filter "$(filter-out $@,$(MAKECMDGOALS))"
+	docker-compose exec php bin/phpunit --filter "$(filter-out $@,$(MAKECMDGOALS))"
 
 test-coverage: ## Run test with coverage
-	docker-compose exec -u 1000 php bin/phpunit --coverage-html var/coverage
+	docker-compose exec php bin/phpunit --coverage-html var/coverage
 
 static-analyse: ## Analyse project files
 	$(MAKE) phpmd
