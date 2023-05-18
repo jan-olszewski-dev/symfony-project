@@ -20,22 +20,12 @@ class RestaurantPremisesController extends AbstractController
     {
     }
 
-    #[Route('', name: 'app_premises', methods: [Request::METHOD_GET])]
-    public function index(Restaurant $restaurant): Response
-    {
-        return $this->render('premises/index.html.twig', [
-            'premises' => $this->entityManager->getRepository(Premises::class)
-                ->findBy(['restaurant' => $restaurant]),
-            'restaurant' => $restaurant,
-        ]);
-    }
-
     #[Route('/add', name: 'app_premises_add', methods: [Request::METHOD_GET, Request::METHOD_POST])]
     #[IsGranted(RestaurantAdminVoter::RESTAURANT_ADMIN, subject: 'restaurant')]
     public function add(Restaurant $restaurant, Request $request): Response
     {
         $premises = new Premises();
-        $form = $this->createForm(PremisesType::class, $premises);
+        $form = $this->createForm(PremisesType::class, $premises, ['attr' => ['class' => 'col-4 mx-auto']]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -43,7 +33,7 @@ class RestaurantPremisesController extends AbstractController
             $this->entityManager->persist($premises);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_premises', ['restaurant' => $restaurant->getId()]);
+            return $this->redirectToRoute('app_restaurant_info', ['id' => $restaurant->getId()]);
         }
 
         return $this->render('form.html.twig', [
