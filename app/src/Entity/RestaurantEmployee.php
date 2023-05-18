@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RestaurantEmployeeRepository::class)]
+#[ORM\UniqueConstraint(columns: ['employee_id', 'restaurant_id'])]
 class RestaurantEmployee
 {
     #[ORM\Id]
@@ -19,7 +20,7 @@ class RestaurantEmployee
     #[ORM\JoinColumn(nullable: false)]
     private Restaurant $restaurant;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'], inversedBy: 'id')]
     #[ORM\JoinColumn(nullable: false)]
     private User $employee;
 

@@ -27,11 +27,12 @@ final class Version20230427102247 extends AbstractMigration
         $this->addSql('INSERT INTO restaurant_role (role) VALUES ("ROLE_ADMIN"), ("ROLE_EMPLOYEE")');
         $this->addSql('
             CREATE TABLE restaurant_employee (
-                id INT AUTO_INCREMENT NOT NULL,
-                restaurant_id INT NOT NULL,
-                employee_id INT NOT NULL,
-                INDEX IDX_7D3ABB4EB1E7706E (restaurant_id),
-                UNIQUE INDEX UNIQ_7D3ABB4E8C03F15C (employee_id),
+                id INT AUTO_INCREMENT NOT NULL, 
+                restaurant_id INT NOT NULL, 
+                employee_id INT NOT NULL, 
+                INDEX IDX_7D3ABB4EB1E7706E (restaurant_id), 
+                INDEX IDX_7D3ABB4E8C03F15C (employee_id), 
+                UNIQUE INDEX UNIQ_7D3ABB4E8C03F15CB1E7706E (employee_id, restaurant_id), 
                 PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         ');
