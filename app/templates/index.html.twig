@@ -9,12 +9,13 @@
     <div class="search-container">
         <div class="search-form">
             <h2 class="text-center">Welcome in restaurant project</h2>
-            <div class="col-10 d-flex justify-content-center" data-controller="search-restaurant"
-                 data-search-restaurant-url-value="{{ path('app_restaurant_list') }}">
-                <input data-search-restaurant-target="name"
-                       placeholder="Find your restaurant to make an order" type="text"
-                       data-action="keydown.enter->search-restaurant#search"/>
-                <button class="btn btn-primary" data-action="click->search-restaurant#search">Search</button>
+            <div class="col-10 d-flex justify-content-center" {{ stimulus_controller('search-restaurant', {'url': path('app_restaurant_list')}) }}>
+                <input placeholder="Find your restaurant to make an order" type="text"
+                        {{ stimulus_target('search-restaurant', 'name') }}
+                        {{ stimulus_action('search-restaurant', 'search', 'keydown.enter') }}/>
+                <button class="btn btn-primary" {{ stimulus_action('search-restaurant', 'search', 'click') }}>
+                    Search
+                </button>
             </div>
         </div>
         <div class="image-container">
