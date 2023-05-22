@@ -16,20 +16,12 @@ use Doctrine\Persistence\ObjectManager;
 
 class RestaurantEmployeeFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
-    private RestaurantRole $adminRole;
-    private RestaurantRole $employeeRole;
-
     public function __construct(
-        private readonly UserRepository $userRepository,
-        private readonly RestaurantRepository $restaurantRepository,
-        RestaurantRoleRepository $restaurantRoleRepository
-    ) {
-        /** @var RestaurantRole $adminRole */
-        $adminRole = $restaurantRoleRepository->findOneBy(['role' => RestaurantRole::ADMIN]);
-        $this->adminRole = $adminRole;
-        /** @var RestaurantRole $employeeRole */
-        $employeeRole = $restaurantRoleRepository->findOneBy(['role' => RestaurantRole::EMPLOYEE]);
-        $this->employeeRole = $employeeRole;
+        private readonly UserRepository           $userRepository,
+        private readonly RestaurantRepository     $restaurantRepository,
+        private readonly RestaurantRoleRepository $restaurantRoleRepository
+    )
+    {
     }
 
     public function load(ObjectManager $manager): void
@@ -58,6 +50,8 @@ class RestaurantEmployeeFixtures extends Fixture implements DependentFixtureInte
     {
         yield from $this->getAdminEmployee();
 
+        /** @var RestaurantRole $employeeRole */
+        $employeeRole = $this->restaurantRoleRepository->findOneBy(['role' => RestaurantRole::EMPLOYEE]);
         /** @var User $user */
         $users = $this->userRepository->findAll();
         foreach (array_rand($users, 5) as $key) {
@@ -65,7 +59,7 @@ class RestaurantEmployeeFixtures extends Fixture implements DependentFixtureInte
             if (!in_array(UserRole::ADMIN, $user->getRoles())) {
                 yield (new RestaurantEmployee())
                     ->setEmployee($user)
-                    ->addRole($this->employeeRole);
+                    ->addRole($employeeRole);
             }
         }
     }
@@ -73,9 +67,11 @@ class RestaurantEmployeeFixtures extends Fixture implements DependentFixtureInte
     public function getAdminEmployee(): \Generator
     {
         $adminUser = $this->getReference(UserFixtures::ADMIN_USER);
+        /** @var RestaurantRole $adminRole */
+        $adminRole = $this->restaurantRoleRepository->findOneBy(['role' => RestaurantRole::ADMIN]);
 
         yield (new RestaurantEmployee())
             ->setEmployee($adminUser)
-            ->addRole($this->adminRole);
+            ->addRole($adminRole);
     }
 }

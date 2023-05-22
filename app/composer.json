@@ -43,7 +43,8 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/",
-            "App\\Migrations\\": "migrations/"
+            "App\\Migrations\\": "migrations/",
+            "App\\DataFixtures\\": "DataFixtures/"
         }
     },
     "autoload-dev": {

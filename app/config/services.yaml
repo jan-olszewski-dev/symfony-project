@@ -12,3 +12,6 @@ services:
 
     App\Migrations\:
         resource: '../migrations/'
+
+    App\DataFixtures\:
+        resource: '../DataFixtures/'
