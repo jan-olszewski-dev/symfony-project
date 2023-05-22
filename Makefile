@@ -34,8 +34,8 @@ db-diff: ## Run create migration diff
 	docker-compose exec -u 1000 php bin/console doctrine:migrations:diff --no-interaction
 
 db-reset: ## Reset database to init version
-	docker-compose exec -u 1000 php bin/console doctrine:database:drop --force
-	docker-compose exec -u 1000 php bin/console doctrine:database:drop --env test --force
+	docker-compose exec -u 1000 php bin/console doctrine:database:drop --force --if-exists
+	docker-compose exec -u 1000 php bin/console doctrine:database:drop --env test --force --if-exists
 	$(MAKE) db-migrate
 	$(MAKE) db-fixture
 
