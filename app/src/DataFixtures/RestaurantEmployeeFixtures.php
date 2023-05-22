@@ -20,11 +20,10 @@ class RestaurantEmployeeFixtures extends Fixture implements DependentFixtureInte
     private RestaurantRole $employeeRole;
 
     public function __construct(
-        private readonly UserRepository       $userRepository,
+        private readonly UserRepository $userRepository,
         private readonly RestaurantRepository $restaurantRepository,
-        RestaurantRoleRepository              $restaurantRoleRepository
-    )
-    {
+        RestaurantRoleRepository $restaurantRoleRepository
+    ) {
         /** @var RestaurantRole $adminRole */
         $adminRole = $restaurantRoleRepository->findOneBy(['role' => RestaurantRole::ADMIN]);
         $this->adminRole = $adminRole;

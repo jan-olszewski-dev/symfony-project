@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\Restaurant;
 use App\Entity\RestaurantEmployee;
 use App\Entity\RestaurantRole;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -16,7 +15,7 @@ class EmployeeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('restaurant', HiddenType::class, ['property_path' => 'employee.id',])
+            ->add('restaurant', HiddenType::class, ['property_path' => 'employee.id'])
             ->add('employee', RegisterUserType::class)
             ->add('roles', EntityType::class, [
                 'class' => RestaurantRole::class,

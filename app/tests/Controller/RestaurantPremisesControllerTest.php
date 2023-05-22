@@ -30,9 +30,9 @@ class RestaurantPremisesControllerTest extends WebTestCase
         $restaurant = RestaurantTest::createValidRestaurant();
         $localName = uniqid('name');
         $street = uniqid('street');
-        $streetNumber = (string)rand(0, 100);
-        $flatNumber = (string)rand(0, 1000);
-        $postalCode = (string)rand(10000, 99999);
+        $streetNumber = (string) rand(0, 100);
+        $flatNumber = (string) rand(0, 1000);
+        $postalCode = (string) rand(10000, 99999);
         /** @var EntityManagerInterface $doctrine */
         $doctrine = static::getContainer()->get(EntityManagerInterface::class);
         /** @var City $city */
@@ -87,9 +87,9 @@ class RestaurantPremisesControllerTest extends WebTestCase
         $premises = PremisesTest::createValidPremises();
         $localName = uniqid('name');
         $street = uniqid('street');
-        $streetNumber = (string)rand(0, 100);
-        $flatNumber = (string)rand(0, 1000);
-        $postalCode = (string)rand(10000, 99999);
+        $streetNumber = (string) rand(0, 100);
+        $flatNumber = (string) rand(0, 1000);
+        $postalCode = (string) rand(10000, 99999);
         /** @var EntityManagerInterface $doctrine */
         $doctrine = static::getContainer()->get(EntityManagerInterface::class);
         /** @var City $city */

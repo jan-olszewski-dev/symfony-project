@@ -19,8 +19,7 @@ class RestaurantEmployeeController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager
-    )
-    {
+    ) {
     }
 
     #[Route('/add', name: 'app_restaurant_employee_add')]
@@ -46,12 +45,6 @@ class RestaurantEmployeeController extends AbstractController
         return $this->handleEmployeeForm($form, $request);
     }
 
-    /**
-     * @param FormInterface $form
-     * @param Request $request
-     *
-     * @return Response
-     */
     private function handleEmployeeForm(FormInterface $form, Request $request): Response
     {
         $form->handleRequest($request);
