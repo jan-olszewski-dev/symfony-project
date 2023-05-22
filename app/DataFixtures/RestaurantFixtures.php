@@ -39,18 +39,18 @@ class RestaurantFixtures extends Fixture implements DependentFixtureInterface, F
     private function createMcDonald(): Restaurant
     {
         return (new Restaurant())
-            ->setName("'Mc Donald's'");
+            ->setName("Mc Donald's");
     }
 
     private function createKFC(): Restaurant
     {
         return (new Restaurant())
-            ->setName("'Mc Donald's'");
+            ->setName('KFC');
     }
 
     private function createBurgerKing(): Restaurant
     {
         return (new Restaurant())
-            ->setName("'Mc Donald's'");
+            ->setName('Burger King');
     }
 }
