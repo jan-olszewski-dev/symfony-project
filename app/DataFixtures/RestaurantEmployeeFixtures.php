@@ -17,11 +17,10 @@ use Doctrine\Persistence\ObjectManager;
 class RestaurantEmployeeFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     public function __construct(
-        private readonly UserRepository           $userRepository,
-        private readonly RestaurantRepository     $restaurantRepository,
+        private readonly UserRepository $userRepository,
+        private readonly RestaurantRepository $restaurantRepository,
         private readonly RestaurantRoleRepository $restaurantRoleRepository
-    )
-    {
+    ) {
     }
 
     public function load(ObjectManager $manager): void

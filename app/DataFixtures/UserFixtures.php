@@ -17,8 +17,10 @@ class UserFixtures extends Fixture implements FixtureGroupInterface
     private UserRole $userRole;
     private UserRole $adminRole;
 
-    public function __construct(private UserPasswordHasherInterface $passwordHasher, UserRoleRepository $roleRepository)
-    {
+    public function __construct(
+        private readonly UserPasswordHasherInterface $passwordHasher,
+        UserRoleRepository $roleRepository
+    ) {
         /** @var UserRole $userRole */
         $userRole = $roleRepository->findOneBy(['role' => UserRole::USER]);
         $this->userRole = $userRole;
