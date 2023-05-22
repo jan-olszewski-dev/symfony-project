@@ -6,11 +6,14 @@ use App\Entity\User;
 use App\Entity\UserRole;
 use App\Repository\UserRoleRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture implements FixtureGroupInterface
 {
+    public const USER_GROUP = 'user';
+    public const ADMIN_USER = 'ADMIN_USER';
     private UserRole $userRole;
     private UserRole $adminRole;
 
@@ -36,7 +39,7 @@ class UserFixtures extends Fixture
             $user = (new User())
                 ->setEmail("user$i@test.com")
                 ->setFirstName("User$i")
-                ->setLastName("Test")
+                ->setLastName('Test')
                 ->setPassword($password)
                 ->addRole($this->userRole);
 
@@ -44,6 +47,12 @@ class UserFixtures extends Fixture
         }
 
         $manager->flush();
+        $this->addReference(UserFixtures::ADMIN_USER, $adminUser);
+    }
+
+    public static function getGroups(): array
+    {
+        return [UserFixtures::USER_GROUP];
     }
 
     private function createTestUser(): User
