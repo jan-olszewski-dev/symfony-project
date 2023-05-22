@@ -28,4 +28,17 @@
       }
     }
   }
+
+  .employees {
+    ul {
+      list-style: none;
+
+      li {
+        i {
+          color: black;
+          margin: 0 0.25rem;
+        }
+      }
+    }
+  }
 }

@@ -15,6 +15,7 @@
         "league/oauth2-facebook": "*",
         "league/oauth2-google": "^4.0",
         "league/oauth2-linkedin": "*",
+        "sensio/framework-extra-bundle": "^6.2",
         "symfony/console": "6.2.*",
         "symfony/dotenv": "6.2.*",
         "symfony/event-dispatcher": "6.2.*",

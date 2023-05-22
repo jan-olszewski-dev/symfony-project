@@ -44,7 +44,7 @@
                 {% endfor %}
             </div>
         </div>
-        <div class="col-8 my-3">
+        <div class="employees col-8 my-3">
             <h3>Employees</h3>
             <ul>
                 {% for employee in restaurant.employees %}
@@ -56,6 +56,9 @@
                         {% if constant('App\\Entity\\RestaurantRole::ADMIN') not in employee.roles %}
                             <i class="bi bi-x-square" data-toggle="tooltip" data-placement="top" title="remove"></i>
                         {% endif %}
+                        <a href="{{ path('app_restaurant_employee_edit', {'restaurant': employee.restaurant.id, 'employee': employee.employee.id}) }}">
+                            <i class="bi bi-pencil"></i>
+                        </a>
                     </li>
                 {% endfor %}
             </ul>

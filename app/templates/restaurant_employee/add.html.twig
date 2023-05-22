@@ -1,0 +1,19 @@
+{% extends ['form.html.twig'] %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .employee-add-wrapper {
+            width: 33%;
+            margin: 0 auto 5rem;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="employee-add-wrapper">
+        {% block form %}
+            {{ parent() }}
+        {% endblock %}
+    </div>
+{% endblock %}
