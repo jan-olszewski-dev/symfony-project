@@ -1,0 +1,15 @@
+<div class="d-flex justify-content-center col-12">
+    <button class="mx-3 btn btn-sm btn-primary" {{ stimulus_action('pagination', 'previous', 'click') }}>
+        <i class="bi bi-arrow-left"></i>
+    </button>
+    <div class="pages-wrapper">
+        <button class="d-none mx-1 btn btn-sm"
+                {{ stimulus_target('pagination', 'pageButton') }}
+                {{ stimulus_action('pagination', 'showPage', 'click', {pagenumber: 1}) }}>
+            1
+        </button>
+    </div>
+    <button class="mx-3 btn btn-sm btn-primary" {{ stimulus_action('pagination', 'next', 'click') }}>
+        <i class="bi bi-arrow-right"></i>
+    </button>
+</div>

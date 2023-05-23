@@ -8,7 +8,7 @@ export default class PaginationController extends Controller {
         },
     };
 
-    static targets = ['address', 'pageButton'];
+    static targets = ['element', 'pageButton'];
 
     initialize() {
         this.page = 1
@@ -42,7 +42,7 @@ export default class PaginationController extends Controller {
         const visibleMinIndex = (this.page - 1) * this.perPageValue;
         const visibleMaxIndex = (this.page - 1) * this.perPageValue + this.perPageValue;
 
-        this.addressTargets.forEach((element, index) => {
+        this.elementTargets.forEach((element, index) => {
             element.hidden = index < visibleMinIndex || index >= visibleMaxIndex
         });
         this.preparePageButtons();
@@ -72,7 +72,7 @@ export default class PaginationController extends Controller {
     }
 
     get maxPage() {
-        return Number((this.addressTargets.length / this.perPageValue).toPrecision(1));
+        return Number((this.elementTargets.length / this.perPageValue).toPrecision(1));
     }
 
     get minPageButtonNumber() {

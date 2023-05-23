@@ -23,7 +23,7 @@
             </div>
             <div class="addresses-wrapper col-12" {{ stimulus_controller('pagination', {'perPage': 3}) }}>
                 {% for premises in restaurant.premises %}
-                    <div class="address-wrapper" {{ stimulus_target('pagination', 'address') }}>
+                    <div class="address-wrapper" {{ stimulus_target('pagination', 'element') }}>
                         <h5 data-toggle="tooltip" data-placement="top"
                             title="{{ premises.name }}">{{ premises.name }}</h5>
                         <p class="m-0 fw-bold">Address:</p>
@@ -42,13 +42,7 @@
                 {% else %}
                     <p>No premises assigned to restaurant</p>
                 {% endfor %}
-                <div class="d-flex justify-content-center col-12">
-                    <button class="mx-3 btn btn-sm btn-primary" {{ stimulus_action('pagination', 'previous', 'click') }}><i class="bi bi-arrow-left"></i></button>
-                    <div class="pages-wrapper">
-                        <button class="d-none mx-1 btn btn-sm" {{ stimulus_target('pagination', 'pageButton') }} {{ stimulus_action('pagination', 'showPage', 'click', {pagenumber: 1}) }}>1</button>
-                    </div>
-                    <button class="mx-3 btn btn-sm btn-primary" {{ stimulus_action('pagination', 'next', 'click') }}><i class="bi bi-arrow-right"></i></button>
-                </div>
+                {% include 'helpers/paginationButtons.html.twig' %}
             </div>
         </div>
         <div class="employees col-8 my-3">
