@@ -20,15 +20,20 @@ export default class PaginationController extends Controller {
         const newButton = this.pageButtonTarget.cloneNode(true);
         const minPageButtonNumber = this.minPageButtonNumber;
         const maxPageButtonNumber = this.maxPageButtonNumber;
-        buttonsWrapper.innerHTML = newButton.outerHTML;
 
-        for (let i = this.maxPage; i >= 1; i--) {
-            if (i >= minPageButtonNumber && i <= maxPageButtonNumber) {
-                newButton.setAttribute('data-pagination-pagenumber-param', i);
-                newButton.innerText = i;
-                newButton.classList.remove('d-none', 'btn-primary', 'btn-secondary');
-                this.page === i ? newButton.classList.add('btn-primary') : newButton.classList.add('btn-secondary');
-                this.pageButtonTarget.insertAdjacentHTML('afterend', newButton.outerHTML);
+        if (this.maxPage <= 1) {
+            buttonsWrapper.parentNode.innerHTML = newButton.outerHTML;
+        } else {
+            buttonsWrapper.innerHTML = newButton.outerHTML;
+
+            for (let i = this.maxPage; i >= 1; i--) {
+                if (i >= minPageButtonNumber && i <= maxPageButtonNumber) {
+                    newButton.setAttribute('data-pagination-pagenumber-param', i);
+                    newButton.innerText = i;
+                    newButton.classList.remove('d-none', 'btn-primary', 'btn-secondary');
+                    this.page === i ? newButton.classList.add('btn-primary') : newButton.classList.add('btn-secondary');
+                    this.pageButtonTarget.insertAdjacentHTML('afterend', newButton.outerHTML);
+                }
             }
         }
     }
