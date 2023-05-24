@@ -5,7 +5,9 @@ namespace App\Tests\Form;
 use App\Entity\User;
 use App\Form\RegisterUserType;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
+use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Validation;
 
 class RegisterUserTypeTest extends TypeTestCase
@@ -17,8 +19,13 @@ class RegisterUserTypeTest extends TypeTestCase
             ->addDefaultDoctrineAnnotationReader()
             ->getValidator();
 
+        $hasher = $this->createMock(UserPasswordHasherInterface::class);
+        $hasher->method('hashPassword')->willReturn(uniqid('password'));
+        $testedType = new RegisterUserType($hasher);
+
         return [
             new ValidatorExtension($validator),
+            new PreloadedExtension([$testedType], []),
         ];
     }
 
@@ -45,12 +52,15 @@ class RegisterUserTypeTest extends TypeTestCase
 
         $expectedUser = (new User())
             ->setEmail($email)
-            ->setPlainPassword($plainPasswordFirst)
             ->setFirstName($firstName)
             ->setLastName($lastName);
 
         $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($expectedUser, $user);
+        $this->assertSame($email, $user->getEmail());
+        $this->assertSame($firstName, $user->getFirstName());
+        $this->assertSame($lastName, $user->getLastName());
+        $this->assertNotEmpty($user->getPassword());
+        $this->assertEmpty($user->getPlainPassword());
     }
 
     /** @dataProvider invalidDataProvider */

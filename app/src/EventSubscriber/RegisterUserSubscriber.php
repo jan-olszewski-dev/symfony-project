@@ -29,15 +29,6 @@ class RegisterUserSubscriber implements EventSubscriberInterface
         }
     }
 
-    public function onRegisterUserEventPre(RegisterUserEvent $event): void
-    {
-        if (!$event->isPropagationStopped()) {
-            $user = $event->getUser();
-            $password = $this->passwordHasher->hashPassword($user, (string) $user->getPlainPassword());
-            $user->setPassword($password);
-        }
-    }
-
     public function onRegisterUserEventPost(RegisterUserEvent $event): void
     {
         if (!$event->isPropagationStopped()) {
@@ -54,7 +45,6 @@ class RegisterUserSubscriber implements EventSubscriberInterface
         return [
             RegisterUserEvent::REGISTER_USER => [
                 ['checkIfUserExists', 10],
-                ['onRegisterUserEventPre', 0],
                 ['onRegisterUserEventPost', -10],
             ],
             RegisterUserEvent::REGISTER_SOCIAL_USER => [
