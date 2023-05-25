@@ -28,7 +28,7 @@ class RestaurantEmployeeController extends AbstractController
 
     #[Route('/add', name: 'app_restaurant_employee_add')]
     #[NotFoundRedirect(path: 'app_restaurant_list', scope: 'restaurant')]
-    public function addEmployee(?Restaurant $restaurant, Request $request): Response
+    public function addEmployee(Restaurant $restaurant, Request $request): Response
     {
         $employee = (new RestaurantEmployee())->setRestaurant($restaurant);
         $form = $this->createForm(EmployeeType::class, $employee);
@@ -70,8 +70,7 @@ class RestaurantEmployeeController extends AbstractController
         class: RestaurantEmployee::class,
         options: ['mapping' => ['employee' => 'employee', 'restaurant' => 'restaurant']]
     )]
-    #[NotFoundRedirect(path: 'app_restaurant_list', scope: 'employee')]
-    public function removeEmployee(?RestaurantEmployee $employee, Restaurant $restaurant): Response
+    public function removeEmployee(RestaurantEmployee $employee, Restaurant $restaurant): Response
     {
         $this->entityManager->remove($employee);
         $this->entityManager->flush();

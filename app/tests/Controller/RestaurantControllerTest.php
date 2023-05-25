@@ -59,7 +59,7 @@ class RestaurantControllerTest extends WebTestCase
         $this->assertSelectorTextSame('.restaurant-wrapper p', 'No premises assigned to restaurant');
     }
 
-    public function testRestaurantInfoAsNormalUser()
+    public function testRestaurantInfoAsNormalUser(): void
     {
         $user = UserTest::createValidUser();
         /** @var EntityManagerInterface $doctrine */
