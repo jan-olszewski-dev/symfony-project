@@ -50,11 +50,6 @@ class RegisterUserTypeTest extends TypeTestCase
             'lastName' => $lastName,
         ]);
 
-        $expectedUser = (new User())
-            ->setEmail($email)
-            ->setFirstName($firstName)
-            ->setLastName($lastName);
-
         $this->assertTrue($form->isSynchronized());
         $this->assertSame($email, $user->getEmail());
         $this->assertSame($firstName, $user->getFirstName());
