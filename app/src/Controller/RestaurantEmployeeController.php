@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Attribute\NotFoundRedirect;
 use App\Entity\Restaurant;
 use App\Entity\RestaurantEmployee;
 use App\Event\RegisterUserEvent;
@@ -26,7 +27,8 @@ class RestaurantEmployeeController extends AbstractController
     }
 
     #[Route('/add', name: 'app_restaurant_employee_add')]
-    public function addEmployee(Restaurant $restaurant, Request $request): Response
+    #[NotFoundRedirect(path: 'app_restaurant_list', scope: 'restaurant')]
+    public function addEmployee(?Restaurant $restaurant, Request $request): Response
     {
         $employee = (new RestaurantEmployee())->setRestaurant($restaurant);
         $form = $this->createForm(EmployeeType::class, $employee);
@@ -52,7 +54,8 @@ class RestaurantEmployeeController extends AbstractController
         class: RestaurantEmployee::class,
         options: ['mapping' => ['employee' => 'employee', 'restaurant' => 'restaurant']]
     )]
-    public function editEmployee(RestaurantEmployee $employee, Request $request): Response
+    #[NotFoundRedirect(path: 'app_restaurant_list', scope: 'employee')]
+    public function editEmployee(?RestaurantEmployee $employee, Request $request): Response
     {
         $form = $this->createForm(EmployeeType::class, $employee);
         $form->get('employee')->remove('plainPassword');
@@ -67,7 +70,8 @@ class RestaurantEmployeeController extends AbstractController
         class: RestaurantEmployee::class,
         options: ['mapping' => ['employee' => 'employee', 'restaurant' => 'restaurant']]
     )]
-    public function removeEmployee(RestaurantEmployee $employee, Restaurant $restaurant): Response
+    #[NotFoundRedirect(path: 'app_restaurant_list', scope: 'employee')]
+    public function removeEmployee(?RestaurantEmployee $employee, Restaurant $restaurant): Response
     {
         $this->entityManager->remove($employee);
         $this->entityManager->flush();
