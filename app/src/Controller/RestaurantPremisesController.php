@@ -24,29 +24,30 @@ class RestaurantPremisesController extends AbstractController
     #[IsGranted(RestaurantAdminVoter::RESTAURANT_ADMIN, subject: 'restaurant')]
     public function add(Restaurant $restaurant, Request $request): Response
     {
-        $premises = new Premises();
+        $premises = (new Premises())->setRestaurant($restaurant);
 
-        return $this->handlePremisesForm($premises, $request, $restaurant);
+        return $this->handlePremisesForm($premises, $request);
     }
 
     #[Route('/edit/{id}', name: 'app_premises_edit', requirements: ['id' => '\d+'], methods: [Request::METHOD_GET, Request::METHOD_POST])]
     #[IsGranted(RestaurantAdminVoter::RESTAURANT_ADMIN, subject: 'restaurant')]
     public function edit(Restaurant $restaurant, Premises $premises, Request $request): Response
     {
-        return $this->handlePremisesForm($premises, $request, $restaurant);
+        $premises->setRestaurant($restaurant);
+
+        return $this->handlePremisesForm($premises, $request);
     }
 
-    public function handlePremisesForm(Premises $premises, Request $request, Restaurant $restaurant): Response
+    public function handlePremisesForm(Premises $premises, Request $request): Response
     {
         $form = $this->createForm(PremisesType::class, $premises, ['attr' => ['class' => 'col-4 mx-auto']]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $premises->setRestaurant($restaurant);
             $this->entityManager->persist($premises);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_restaurant_info', ['id' => $restaurant->getId()]);
+            return $this->redirectToRoute('app_restaurant_info', ['id' => $premises->getRestaurant()->getId()]);
         }
 
         return $this->render('form.html.twig', [
