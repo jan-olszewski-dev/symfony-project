@@ -59,6 +59,18 @@ class RestaurantControllerTest extends WebTestCase
         $this->assertSelectorTextSame('.restaurant-wrapper p', 'No premises assigned to restaurant');
     }
 
+    public function testRestaurantInfoAsNormalUser()
+    {
+        $user = UserTest::createValidUser();
+        /** @var EntityManagerInterface $doctrine */
+        $doctrine = static::getContainer()->get(EntityManagerInterface::class);
+        $doctrine->persist($user);
+        $doctrine->flush();
+        $this->client->loginUser($user);
+        $this->client->request(Request::METHOD_GET, '/restaurant/99');
+        $this->assertResponseRedirects('/restaurant/search');
+    }
+
     public function testCreateRestaurant(): void
     {
         $restaurantName = uniqid('name');

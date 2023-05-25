@@ -29,7 +29,9 @@ class NotFoundRedirectListener
                 if (\is_null($event->getNamedArguments()[$attribute->scope])) {
                     $redirect = $this->router->generate($attribute->path);
 
-                    return (new RedirectResponse($redirect))->send();
+                    $event->setController(function() use ($redirect) {
+                        return new RedirectResponse($redirect);
+                    });
                 }
             }
         }
