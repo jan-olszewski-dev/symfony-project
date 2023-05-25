@@ -45,7 +45,7 @@ class RegisterUserType extends AbstractType
             ->add('lastName', TextType::class)
             ->addEventListener(FormEvents::POST_SUBMIT, function (PostSubmitEvent $event) {
                 $form = $event->getForm();
-                if (!$form->isValid()) {
+                if (!$form->isValid() || !$form->has('plainPassword')) {
                     return;
                 }
 

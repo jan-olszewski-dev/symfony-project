@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Restaurant;
 use App\Entity\RestaurantEmployee;
+use App\Event\RegisterUserEvent;
 use App\Form\EmployeeType;
-use App\Repository\RestaurantEmployeeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +20,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class RestaurantEmployeeController extends AbstractController
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
+        private readonly EventDispatcherInterface $dispatcher
     ) {
     }
 
@@ -27,6 +30,18 @@ class RestaurantEmployeeController extends AbstractController
     {
         $employee = (new RestaurantEmployee())->setRestaurant($restaurant);
         $form = $this->createForm(EmployeeType::class, $employee);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $registerUserEvent = new RegisterUserEvent($employee->getEmployee());
+            $this->dispatcher->dispatch($registerUserEvent, RegisterUserEvent::REGISTER_USER);
+
+            if ($registerUserEvent->isPropagationStopped()) {
+                $errorMessage = "Can't set email {$employee->getEmployee()->getEmail()} for employee. ".
+                    'User with specific e-mail already exist';
+                $form->get('employee')->addError(new FormError($errorMessage));
+            }
+        }
 
         return $this->handleEmployeeForm($form, $request);
     }
@@ -41,6 +56,7 @@ class RestaurantEmployeeController extends AbstractController
     {
         $form = $this->createForm(EmployeeType::class, $employee);
         $form->get('employee')->remove('plainPassword');
+        $form->handleRequest($request);
 
         return $this->handleEmployeeForm($form, $request);
     }
@@ -61,14 +77,11 @@ class RestaurantEmployeeController extends AbstractController
 
     private function handleEmployeeForm(FormInterface $form, Request $request): Response
     {
-        $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var RestaurantEmployee $employee */
             $employee = $form->getData();
-            /** @var RestaurantEmployeeRepository $repository */
-            $repository = $this->entityManager->getRepository(RestaurantEmployee::class);
-            $repository->save($employee)->flush();
+            $this->entityManager->persist($employee);
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('app_restaurant_employee_edit', [
                 'restaurant' => $employee->getRestaurant()->getId(),
