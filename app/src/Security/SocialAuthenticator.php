@@ -47,8 +47,8 @@ class SocialAuthenticator extends OAuth2Authenticator implements AuthenticationE
     {
         $routeInfo = $this->router->match($request->getPathInfo());
 
-        return 'app_social_check' === $routeInfo['_route'] &&
-            in_array($routeInfo['social'] ?? null, self::SUPPORTED_SOCIAL);
+        return 'app_social_check' === $routeInfo['_route']
+            && in_array($routeInfo['social'] ?? null, self::SUPPORTED_SOCIAL);
     }
 
     public function authenticate(Request $request): Passport

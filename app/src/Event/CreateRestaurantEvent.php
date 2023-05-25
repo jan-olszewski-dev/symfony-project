@@ -10,7 +10,7 @@ final class CreateRestaurantEvent extends Event
 {
     public const NAME = 'create.restaurant.event';
 
-    public function __construct(private Premises $premises)
+    public function __construct(private readonly Premises $premises)
     {
     }
 

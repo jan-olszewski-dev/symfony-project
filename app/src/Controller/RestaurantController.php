@@ -22,8 +22,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class RestaurantController extends AbstractController
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private EventDispatcherInterface $dispatcher,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly EventDispatcherInterface $dispatcher,
     ) {
     }
 
@@ -56,7 +56,7 @@ class RestaurantController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->dispatcher->dispatch(new CreateRestaurantEvent($premises), CreateRestaurantEvent::NAME);
+            $this->dispatcher->dispatch(new CreateRestaurantEvent($premises));
 
             return $this->redirectToRoute('app_restaurant_list');
         }

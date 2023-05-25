@@ -16,8 +16,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class CreateRestaurantSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private Security $security,
-        private EntityManagerInterface $entityManager,
+        private readonly Security $security,
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -51,7 +51,7 @@ class CreateRestaurantSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            CreateRestaurantEvent::NAME => [
+            CreateRestaurantEvent::class => [
                 ['addCreatorAsAdminToRestaurant', 10],
                 ['createRestaurant', -10],
             ],
