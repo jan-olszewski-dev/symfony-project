@@ -43,7 +43,7 @@ class RestaurantEmployeeController extends AbstractController
             }
         }
 
-        return $this->handleEmployeeForm($form, $request);
+        return $this->handleEmployeeForm($form);
     }
 
     #[Route('/edit/{employee}', name: 'app_restaurant_employee_edit')]
@@ -58,7 +58,7 @@ class RestaurantEmployeeController extends AbstractController
         $form->get('employee')->remove('plainPassword');
         $form->handleRequest($request);
 
-        return $this->handleEmployeeForm($form, $request);
+        return $this->handleEmployeeForm($form);
     }
 
     #[Route('/remove/{employee}', name: 'app_restaurant_employee_remove')]
@@ -75,7 +75,7 @@ class RestaurantEmployeeController extends AbstractController
         return $this->redirectToRoute('app_restaurant_info', ['id' => $restaurant->getId()]);
     }
 
-    private function handleEmployeeForm(FormInterface $form, Request $request): Response
+    private function handleEmployeeForm(FormInterface $form): Response
     {
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var RestaurantEmployee $employee */

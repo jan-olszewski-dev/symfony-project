@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Tests\Entity\RestaurantTest;
 use App\Tests\Entity\UserTest;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +32,7 @@ class RestaurantEmployeeControllerTest extends WebTestCase
         $plainPassword = 'zaq1@WSX';
         $firstName = uniqid('firstName');
         $lastName = uniqid('lastName');
+        /** @var RestaurantRole $restaurantRole */
         $restaurantRole = $doctrine->getRepository(RestaurantRole::class)->find(1);
         $doctrine->persist($restaurant);
         $doctrine->flush();
@@ -50,6 +52,7 @@ class RestaurantEmployeeControllerTest extends WebTestCase
         ]);
 
         $this->client->submit($form);
+        /** @var User $user */
         $user = $doctrine->getRepository(User::class)->findOneBy(['email' => $email]);
         $this->assertResponseRedirects("/restaurant/{$restaurant->getId()}/employee/edit/{$user->getId()}");
 
@@ -57,9 +60,9 @@ class RestaurantEmployeeControllerTest extends WebTestCase
         $employee = $doctrine
             ->createQuery('SELECT re FROM '.RestaurantEmployee::class.' re WHERE re.employee = :user')
             ->setParameter('user', $user)
-            ->setFetchMode(RestaurantEmployee::class, 'roles', 'EAGER')
-            ->setFetchMode(RestaurantEmployee::class, 'employee', 'EAGER')
-            ->setFetchMode(RestaurantEmployee::class, 'restaurant', 'EAGER')
+            ->setFetchMode(RestaurantEmployee::class, 'roles', ClassMetadataInfo::FETCH_EAGER)
+            ->setFetchMode(RestaurantEmployee::class, 'employee', ClassMetadataInfo::FETCH_EAGER)
+            ->setFetchMode(RestaurantEmployee::class, 'restaurant', ClassMetadataInfo::FETCH_EAGER)
             ->getOneOrNullResult();
 
         $this->assertSame($user->getId(), $employee->getEmployee()->getId());
@@ -77,6 +80,7 @@ class RestaurantEmployeeControllerTest extends WebTestCase
         $doctrine = static::getContainer()->get(EntityManagerInterface::class);
         $restaurant = RestaurantTest::createValidRestaurant();
         $user = UserTest::createValidUser();
+        /** @var RestaurantRole $restaurantRole */
         $restaurantRole = $doctrine->getRepository(RestaurantRole::class)->find(1);
         $doctrine->persist($restaurant);
         $doctrine->persist($user);
@@ -108,10 +112,12 @@ class RestaurantEmployeeControllerTest extends WebTestCase
         $email = uniqid('email_').'@test.com';
         $firstName = uniqid('firstName');
         $lastName = uniqid('lastName');
+        /** @var RestaurantRole $restaurantRole */
         $restaurantRole = $doctrine->getRepository(RestaurantRole::class)->find(1);
         $doctrine->persist($restaurant);
         $doctrine->flush();
-        $user = $restaurant->getEmployees()->get(0)->getEmployee();
+        /** @var User $user */
+        $user = $restaurant->getEmployees()->get(0)?->getEmployee();
 
         $crawler = $this->client->request(Request::METHOD_GET, "/restaurant/{$restaurant->getId()}/employee/edit/{$user->getId()}");
 
@@ -131,9 +137,9 @@ class RestaurantEmployeeControllerTest extends WebTestCase
         $employee = $doctrine
             ->createQuery('SELECT re FROM '.RestaurantEmployee::class.' re WHERE re.employee = :user')
             ->setParameter('user', $user)
-            ->setFetchMode(RestaurantEmployee::class, 'roles', 'EAGER')
-            ->setFetchMode(RestaurantEmployee::class, 'employee', 'EAGER')
-            ->setFetchMode(RestaurantEmployee::class, 'restaurant', 'EAGER')
+            ->setFetchMode(RestaurantEmployee::class, 'roles', ClassMetadataInfo::FETCH_EAGER)
+            ->setFetchMode(RestaurantEmployee::class, 'employee', ClassMetadataInfo::FETCH_EAGER)
+            ->setFetchMode(RestaurantEmployee::class, 'restaurant', ClassMetadataInfo::FETCH_EAGER)
             ->getOneOrNullResult();
 
         $this->assertSame($user->getId(), $employee->getEmployee()->getId());
@@ -152,7 +158,8 @@ class RestaurantEmployeeControllerTest extends WebTestCase
         $restaurant = RestaurantTest::createValidRestaurant();
         $doctrine->persist($restaurant);
         $doctrine->flush();
-        $user = $restaurant->getEmployees()->get(0)->getEmployee();
+        /** @var User $user */
+        $user = $restaurant->getEmployees()->get(0)?->getEmployee();
 
         $this->client->request(Request::METHOD_GET, "/restaurant/{$restaurant->getId()}/employee/remove/{$user->getId()}");
         $this->assertResponseRedirects("/restaurant/{$restaurant->getId()}");

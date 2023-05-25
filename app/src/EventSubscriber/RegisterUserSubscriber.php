@@ -7,14 +7,12 @@ use App\Event\RegisterUserEvent;
 use App\Repository\UserRepository;
 use App\Repository\UserRoleRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /** @SuppressWarnings(PHPMD.MissingImport) */
 class RegisterUserSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly UserRepository $repository,
-        private readonly UserPasswordHasherInterface $passwordHasher,
         private readonly UserRoleRepository $userRoleRepository
     ) {
     }

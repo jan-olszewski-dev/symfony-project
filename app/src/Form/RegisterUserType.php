@@ -51,7 +51,7 @@ class RegisterUserType extends AbstractType
 
                 /** @var User $user */
                 $user = $form->getData();
-                $hash = $this->userPasswordHasher->hashPassword($user, $user->getPlainPassword());
+                $hash = $this->userPasswordHasher->hashPassword($user, (string) $user->getPlainPassword());
                 $user->setPassword($hash);
                 $user->eraseCredentials();
             });
