@@ -76,7 +76,8 @@
         ],
         "phpmd": "phpmd src,tests ansi phpmd.xml",
         "phpstan": "phpstan analyse --memory-limit=-1",
-        "phpcs": "php-cs-fixer fix"
+        "phpcs": "php-cs-fixer fix",
+        "php-cs-fixer": "php-cs-fixer --rules=@Symfony"
     },
     "conflict": {
         "symfony/symfony": "*"

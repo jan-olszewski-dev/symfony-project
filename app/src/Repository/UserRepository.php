@@ -60,13 +60,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     /**
      * @throws NonUniqueResultException
      */
-    public function loadUserByIdentifier(string $email): ?UserInterface
+    public function loadUserByIdentifier(string $identifier): ?UserInterface
     {
         return $this->createQueryBuilder('u')
             ->select('u, r')
             ->leftJoin('u.roles', 'r')
             ->where('u.email = :email')
-            ->setParameter('email', $email)
+            ->setParameter('email', $identifier)
             ->getQuery()
             ->getOneOrNullResult();
     }

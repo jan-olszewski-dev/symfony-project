@@ -47,7 +47,7 @@ class RestaurantPremisesController extends AbstractController
             $this->entityManager->persist($premises);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_restaurant_info', ['id' => $premises->getRestaurant()->getId()]);
+            return $this->redirectToRoute(route: 'app_restaurant_info', parameters: ['id' => $premises->getRestaurant()->getId()]);
         }
 
         return $this->render('form.html.twig', [

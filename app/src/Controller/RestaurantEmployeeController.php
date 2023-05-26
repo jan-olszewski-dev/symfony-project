@@ -75,7 +75,7 @@ class RestaurantEmployeeController extends AbstractController
         $this->entityManager->remove($employee);
         $this->entityManager->flush();
 
-        return $this->redirectToRoute('app_restaurant_info', ['id' => $restaurant->getId()]);
+        return $this->redirectToRoute(route: 'app_restaurant_info', parameters: ['id' => $restaurant->getId()]);
     }
 
     private function handleEmployeeForm(FormInterface $form): Response
@@ -86,7 +86,7 @@ class RestaurantEmployeeController extends AbstractController
             $this->entityManager->persist($employee);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_restaurant_employee_edit', [
+            return $this->redirectToRoute(route: 'app_restaurant_employee_edit', parameters: [
                 'restaurant' => $employee->getRestaurant()->getId(),
                 'employee' => $employee->getEmployee()->getId(),
             ]);

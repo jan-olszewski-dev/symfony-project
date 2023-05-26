@@ -16,12 +16,12 @@ class Address
 
     #[ORM\Column(length: 80)]
     #[Assert\Length(max: 80)]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     private string $street;
 
     #[ORM\Column(length: 10)]
     #[Assert\Length(max: 10)]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     private string $streetNumber;
 
     #[ORM\Column(length: 10, nullable: true)]
@@ -30,7 +30,7 @@ class Address
 
     #[ORM\Column(length: 5)]
     #[Assert\Length(max: 5)]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     private string $postalCode;
 
     #[ORM\ManyToOne]

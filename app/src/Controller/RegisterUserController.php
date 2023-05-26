@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class RegisterUserController extends AbstractController
 {
     public function __construct(
-        private EventDispatcherInterface $dispatcher,
+        private readonly EventDispatcherInterface $dispatcher,
     ) {
     }
 

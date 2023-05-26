@@ -13,7 +13,7 @@ use Symfony\Component\Routing\RouterInterface;
 #[AsEventListener(event: ControllerArgumentsEvent::class)]
 class NotFoundRedirectListener
 {
-    public function __construct(private RouterInterface $router)
+    public function __construct(private readonly RouterInterface $router)
     {
     }
 

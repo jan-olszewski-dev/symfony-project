@@ -18,7 +18,7 @@ class Restaurant
 
     #[ORM\Column(length: 255)]
     #[Assert\Length(max: 255)]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     private string $name;
 
     /** @var Collection<int, Premises> */

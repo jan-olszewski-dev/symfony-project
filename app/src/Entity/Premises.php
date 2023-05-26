@@ -18,12 +18,12 @@ class Premises
 
     #[ORM\Column(length: 255)]
     #[Assert\Length(max: 255)]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     private string $name;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid()]
+    #[Assert\Valid]
     private Address $address;
 
     #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'premises')]

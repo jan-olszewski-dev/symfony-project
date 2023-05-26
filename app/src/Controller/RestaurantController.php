@@ -58,7 +58,7 @@ class RestaurantController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->dispatcher->dispatch(new CreateRestaurantEvent($premises));
 
-            return $this->redirectToRoute('app_restaurant_list');
+            return $this->redirectToRoute(route: 'app_restaurant_list');
         }
 
         return $this->render('restaurant/create.html.twig', [
