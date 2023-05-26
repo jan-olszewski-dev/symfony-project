@@ -6,7 +6,7 @@ services:
       - "${NGINX_EXTERNAL_PORT}:80"
     volumes:
       - "./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf"
-      - "./app:${WORK_DIR}"
+      - "./app:/var/www/html"
     depends_on:
       - php
       - mysql
@@ -22,7 +22,7 @@ services:
         USER_UUID: "${USER_UUID}"
         GROUP_UUID: "${GROUP_UUID}"
     volumes:
-      - "./app:${WORK_DIR}"
+      - "./app:/var/www/html"
     expose:
       - 9000
     depends_on:
@@ -54,11 +54,11 @@ services:
       context: .
       dockerfile: ./docker/node/Dockerfile
       args:
-        WORK_DIR: "${WORK_DIR}"
-    command: ${WORK_DIR}/../cache/entrypoint.sh ${WORK_DIR}
+        WORK_DIR: "/var/www/html"
+    command: /var/www/cache/entrypoint.sh /var/www/html
     volumes:
-      - "./app:${WORK_DIR}"
-      - "./docker/node/entrypoint.sh:${WORK_DIR}/../cache/entrypoint.sh"
+      - "./app:/var/www/html"
+      - "./docker/node/entrypoint.sh:/var/www/html/../cache/entrypoint.sh"
     ports:
       - "${NODE_EXTERNAL_PORT}:3000"
     environment:
