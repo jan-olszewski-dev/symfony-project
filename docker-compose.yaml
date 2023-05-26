@@ -44,7 +44,7 @@ services:
       test: "/usr/bin/mysql --user=root --password=${DATABASE_ROOT_PASSWORD} --execute \"SHOW DATABASES;\""
       interval: 2s
       timeout: 20s
-      retries: 10
+      retries: 60
     deploy:
       resources:
         limits:

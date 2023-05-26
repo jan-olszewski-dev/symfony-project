@@ -28,25 +28,25 @@ restart: ## Restart project
 	$(MAKE) start
 
 open: ## Open container
-	docker-compose exec -u 1000 $(filter-out $@,$(MAKECMDGOALS)) bash
+	docker-compose exec $(filter-out $@,$(MAKECMDGOALS)) bash
 
 db-diff: ## Run create migration diff
-	docker-compose exec -u 1000 php bin/console doctrine:migrations:diff --no-interaction
+	docker-compose exec php bin/console doctrine:migrations:diff --no-interaction
 
 db-reset: ## Reset database to init version
-	docker-compose exec -u 1000 php bin/console doctrine:database:drop --force --if-exists
-	docker-compose exec -u 1000 php bin/console doctrine:database:drop --env test --force --if-exists
+	docker-compose exec php bin/console doctrine:database:drop --force --if-exists
+	docker-compose exec php bin/console doctrine:database:drop --env test --force --if-exists
 	$(MAKE) db-migrate
 	$(MAKE) db-fixture
 
 db-migrate: ## Run doctrine migrations
-	docker-compose exec -u 1000 php bin/console doctrine:database:create --no-interaction --if-not-exists
-	docker-compose exec -u 1000 php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
-	docker-compose exec -u 1000 php bin/console doctrine:database:create --env test --no-interaction --if-not-exists
-	docker-compose exec -u 1000 php bin/console doctrine:migrations:migrate --env test --no-interaction --allow-no-migration
+	docker-compose exec php bin/console doctrine:database:create --no-interaction --if-not-exists
+	docker-compose exec php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+	docker-compose exec php bin/console doctrine:database:create --env test --no-interaction --if-not-exists
+	docker-compose exec php bin/console doctrine:migrations:migrate --env test --no-interaction --allow-no-migration
 
 db-fixture: ## Run doctrine fixtures with append
-	docker-compose exec -u 1000 php bin/console doctrine:fixture:load --append
+	docker-compose exec php bin/console doctrine:fixture:load --append
 
 test: ## Run test
 	docker-compose exec php bin/phpunit --filter "$(filter-out $@,$(MAKECMDGOALS))"
