@@ -1,4 +1,6 @@
 {
+    "name": "jolszewski/symfonyproject",
+    "description": "It is simple project that prove Symfony skill and stack around Symfony",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
@@ -12,9 +14,9 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.14",
         "knpuniversity/oauth2-client-bundle": "^2.14",
-        "league/oauth2-facebook": "*",
+        "league/oauth2-facebook": "^2.2",
         "league/oauth2-google": "^4.0",
-        "league/oauth2-linkedin": "*",
+        "league/oauth2-linkedin": "^5.1",
         "sensio/framework-extra-bundle": "^6.2",
         "symfony/console": "6.2.*",
         "symfony/dotenv": "6.2.*",
