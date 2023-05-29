@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Address;
+use App\Entity\City;
 use App\Entity\Premises;
 use App\Entity\Restaurant;
 use App\Repository\CityRepository;
@@ -51,11 +52,14 @@ class RestaurantPremisesFixtures extends Fixture implements DependentFixtureInte
 
     private function getAddress(): Address
     {
+        /** @var City $city */
+        $city = $this->cityRepository->find(rand(1, 340));
+
         return (new Address())
             ->setStreet(uniqid('street'))
-            ->setStreetNumber(rand(1, 100))
-            ->setFlatNumber(rand(1, 1000))
-            ->setPostalCode(str_pad(rand(1, 99999), 5, '0'))
-            ->setCity($this->cityRepository->find(rand(1, 340)));
+            ->setStreetNumber((string) rand(1, 100))
+            ->setFlatNumber((string) rand(1, 1000))
+            ->setPostalCode(str_pad((string) rand(1, 99999), 5, '0'))
+            ->setCity($city);
     }
 }
