@@ -14,24 +14,18 @@ class UserFixtures extends Fixture implements FixtureGroupInterface
 {
     public const USER_GROUP = 'user';
     public const ADMIN_USER = 'ADMIN_USER';
-    private UserRole $userRole;
-    private UserRole $adminRole;
 
     public function __construct(
         private readonly UserPasswordHasherInterface $passwordHasher,
-        UserRoleRepository $roleRepository
+        private readonly UserRoleRepository $roleRepository
     ) {
-        /** @var UserRole $userRole */
-        $userRole = $roleRepository->findOneBy(['role' => UserRole::USER]);
-        $this->userRole = $userRole;
-        /** @var UserRole $adminRole */
-        $adminRole = $roleRepository->findOneBy(['role' => UserRole::ADMIN]);
-        $this->adminRole = $adminRole;
     }
 
     public function load(ObjectManager $manager): void
     {
-        $testUser = $this->createTestUser();
+        /** @var UserRole $userRole */
+        $userRole = $this->roleRepository->findOneBy(['role' => UserRole::USER]);
+        $testUser = $this->createTestUser($userRole);
         $manager->persist($testUser);
         $adminUser = $this->createAdminUser();
         $manager->persist($adminUser);
@@ -43,7 +37,7 @@ class UserFixtures extends Fixture implements FixtureGroupInterface
                 ->setFirstName("User$i")
                 ->setLastName('Test')
                 ->setPassword($password)
-                ->addRole($this->userRole);
+                ->addRole($userRole);
 
             $manager->persist($user);
         }
@@ -57,7 +51,7 @@ class UserFixtures extends Fixture implements FixtureGroupInterface
         return [UserFixtures::USER_GROUP];
     }
 
-    private function createTestUser(): User
+    private function createTestUser(UserRole $userRole): User
     {
         $password = $this->passwordHasher->hashPassword(new User(), 'zaq1@WSX');
 
@@ -66,11 +60,13 @@ class UserFixtures extends Fixture implements FixtureGroupInterface
             ->setFirstName('Test')
             ->setLastName('Test')
             ->setPassword($password)
-            ->addRole($this->userRole);
+            ->addRole($userRole);
     }
 
     private function createAdminUser(): User
     {
+        /** @var UserRole $adminRole */
+        $adminRole = $this->roleRepository->findOneBy(['role' => UserRole::ADMIN]);
         $password = $this->passwordHasher->hashPassword(new User(), 'xsw2!QAZ');
 
         return (new User())
@@ -78,6 +74,6 @@ class UserFixtures extends Fixture implements FixtureGroupInterface
             ->setFirstName('Admin')
             ->setLastName('Admin')
             ->setPassword($password)
-            ->addRole($this->adminRole);
+            ->addRole($adminRole);
     }
 }
