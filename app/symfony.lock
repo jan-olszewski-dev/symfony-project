@@ -71,6 +71,15 @@
             ".php-cs-fixer.dist.php"
         ]
     },
+    "jan-olszewski-dev/exception-handling-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/jan-olszewski-dev/exception-handling-bundle-recipe",
+            "branch": "tree",
+            "version": "1.0",
+            "ref": "cdc02449c1b5e3ecfec7fae02c1003ea9f5eaf7a"
+        }
+    },
     "knpuniversity/oauth2-client-bundle": {
         "version": "2.14",
         "recipe": {
@@ -160,6 +169,18 @@
             "version": "1.0",
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
+    },
+    "symfony/monolog-bundle": {
+        "version": "3.8",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "3.7",
+            "ref": "213676c4ec929f046dfde5ea8e97625b81bc0578"
+        },
+        "files": [
+            "config/packages/monolog.yaml"
+        ]
     },
     "symfony/phpunit-bridge": {
         "version": "6.2",
