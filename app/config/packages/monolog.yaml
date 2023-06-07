@@ -1,0 +1,20 @@
+monolog:
+  channels:
+    - '!deprecation'
+
+when@dev:
+  monolog:
+    handlers:
+      main:
+        type: rotating_file
+        path: '%kernel.logs_dir%/%kernel.environment%.log'
+        level: error
+        max_files: "%env(MAX_LOG_FILE)%"
+      elasticsearch:
+        type: "elasticsearch"
+        level: error
+        elasticsearch:
+          host: '%env(ELASTICSEARCH_HOST)%'
+          port: '%env(ELASTICSEARCH_PORT)%'
+          user: 'admin'
+          password: 'zaq1@WSX'
