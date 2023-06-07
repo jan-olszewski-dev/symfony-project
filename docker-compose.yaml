@@ -74,3 +74,67 @@ services:
       resources:
         limits:
           memory: 1g
+
+  elasticsearch:
+    build:
+      context: docker/elasticsearch/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      TZ: $TZ
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTIC_PASSWORD: $PASSWORD
+    depends_on:
+      nginx:
+        condition: service_started
+  logstash:
+    build:
+      context: docker/logstash/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    ports:
+      - "1234:5000"
+      - "9600:9600"
+    expose:
+      - "5044"
+    environment:
+      TZ: $TZ
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    depends_on:
+      - elasticsearch
+  kibana:
+    build:
+      context: docker/kibana/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    ports:
+      - "5601:5601"
+    environment:
+      TZ: $TZ
+      ELASTICSEARCH_HOSTS: 'http://elasticsearch:9200'
+      ELASTICSEARCH_USERNAME: $USERNAME
+      ELASTICSEARCH_PASSWORD: $PASSWORD
+    depends_on:
+      - elasticsearch
+  filebeat:
+    build:
+      context: docker/filebeat/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    entrypoint: "filebeat -e -strict.perms=false"
+    environment:
+      TZ: $TZ
+    volumes:
+      - "./docker/nginx/log:/var/log/nginx:ro"
+    depends_on:
+      logstash:
+        condition: service_started
+      elasticsearch:
+        condition: service_started
+      kibana:
+        condition: service_started
+    links:
+      - logstash
